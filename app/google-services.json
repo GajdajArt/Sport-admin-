@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "82624166033",
+    "firebase_url": "https://sporttournament-4679a.firebaseio.com",
+    "project_id": "sporttournament-4679a",
+    "storage_bucket": "sporttournament-4679a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82624166033:android:9aca8028107ab2b6",
+        "android_client_info": {
+          "package_name": "com.labralab.sporttournament"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "82624166033-r7dqu3nv7ko6h9vm6s1refc1qrahrce9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.labralab.sporttournament",
+            "certificate_hash": "73df69a8e865751e6ecb65c79fc1821159fdd369"
+          }
+        },
+        {
+          "client_id": "82624166033-f78qlj9t9lvgu3en0soi1skrm1qmbsgq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkvZA1BYhfAXR9m5u1IrAbevMWBCZQ608"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "82624166033-f78qlj9t9lvgu3en0soi1skrm1qmbsgq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
