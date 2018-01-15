@@ -141,5 +141,14 @@ public class TeamActivity extends AppCompatActivity {
     public static SegmentTabLayout getSegmentTabLayout() {
         return segmentTabLayout;
     }
+
+    public void showPlayoff(){
+
+        if (tournament.isPlayoff(this)) {
+            segmentTabLayout.setVisibility(View.VISIBLE);
+        } else {
+            segmentTabLayout.setVisibility(View.INVISIBLE);
+        }
+    }
 }
 

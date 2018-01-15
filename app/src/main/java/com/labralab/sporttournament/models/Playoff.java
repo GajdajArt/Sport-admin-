@@ -283,7 +283,7 @@ public class Playoff extends RealmObject {
 
 
         repository = new RealmDB();
-        Tournament tournament = repository.getTournament(playoffTitle);
+        Tournament tournament = Tournament.getInstance(playoffTitle,context);
         tournament.setPlayoff(this);
         repository.delTournament(playoffTitle, true);
         repository.createTournament(tournament);

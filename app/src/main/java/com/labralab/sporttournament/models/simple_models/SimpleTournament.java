@@ -1,24 +1,11 @@
 package com.labralab.sporttournament.models.simple_models;
 
-import android.content.Context;
-import android.widget.Toast;
-
-import com.google.firebase.database.Exclude;
-import com.labralab.sporttournament.db.RealmDB;
-import com.labralab.sporttournament.db.TournDBHelper;
-import com.labralab.sporttournament.db.TournamentRepository;
-import com.labralab.sporttournament.fragments.StartFragment;
 import com.labralab.sporttournament.models.Game;
-import com.labralab.sporttournament.models.Playoff;
 import com.labralab.sporttournament.models.Team;
-import com.labralab.sporttournament.models.Tournament;
-import com.labralab.sporttournament.utils.TournamentUtil;
 
 import java.util.List;
-
-import io.realm.Realm;
 import io.realm.RealmList;
-import io.realm.annotations.Ignore;
+
 
 /**
  * Created by pc on 25.12.2017.
@@ -121,11 +108,11 @@ public class SimpleTournament {
         this.playoff = playoff;
     }
 
-    public Boolean getPlayoffFlag() {
+    public Boolean getIsPlayoffFlag() {
         return isPlayoffFlag;
     }
 
-    public void setPlayoffFlag(Boolean playoffFlag) {
+    public void setIsPlayoffFlag(Boolean playoffFlag) {
         isPlayoffFlag = playoffFlag;
     }
 }

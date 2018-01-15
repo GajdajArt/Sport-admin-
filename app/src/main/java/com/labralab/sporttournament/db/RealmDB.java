@@ -97,18 +97,23 @@ public class RealmDB implements TournamentRepository {
         call.enqueue(new Callback<BasePOJO>() {
             @Override
             public void onResponse(Call<BasePOJO> call, Response<BasePOJO> response) {
+                delAllFromRealm();
                 if (response.body() != null) {
                     tournList = response.body().tournaments;
+
                     for (SimpleTournament st : tournList.getList()) {
                         fBData.add(TournamentUtil.simpleTournToHard(st));
+                        addToRealm(TournamentUtil.simpleTournToHard(st));
                     }
-                    startFragment.setData(fBData);
                 }
+                startFragment.setData(fBData);
             }
 
             @Override
             public void onFailure(Call<BasePOJO> call, Throwable t) {
-
+                Toast.makeText(startFragment.getContext()
+                        ,"Связь с сервером не установлена"
+                        , Toast.LENGTH_LONG).show();
             }
         });
 
@@ -151,6 +156,22 @@ public class RealmDB implements TournamentRepository {
         }
     }
 
+    private void delAllFromRealm() {
+        boolean flag = false;
+        if (!realm.isInTransaction()) {
+            realm.beginTransaction();
+            flag = true;
+        }
+
+        RealmResults<Tournament> results = realm.where(Tournament.class)
+                .findAll();
+        results.deleteAllFromRealm();
+
+        if (flag) {
+            realm.commitTransaction();
+        }
+    }
+
     public void addToRealm(Tournament tournament) {
 
         //copy to Realm
@@ -177,4 +198,5 @@ public class RealmDB implements TournamentRepository {
         }
         tournList.setList(items);
     }
+
 }

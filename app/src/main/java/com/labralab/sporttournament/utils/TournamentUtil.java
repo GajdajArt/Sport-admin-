@@ -80,7 +80,7 @@ public class TournamentUtil {
         newTourn.setTeamInPlayoff(oldTourn.getTeamInPlayoff());
         newTourn.setTeamsCount(oldTourn.getTeamsCount());
         newTourn.setYearOfTourn(oldTourn.getYearOfTourn());
-        newTourn.setPlayoffFlag(oldTourn.getPlayoffFlag());
+        newTourn.setIsPlayoffFlag(oldTourn.getIsPlayoffFlag());
 
         List<Team> teams = new ArrayList<>();
         List<Game> games = new ArrayList<>();
@@ -106,7 +106,7 @@ public class TournamentUtil {
         newTourn.setTeamInPlayoff(oldTourn.getTeamInPlayoff());
         newTourn.setTeamsCount(oldTourn.getTeamsCount());
         newTourn.setYearOfTourn(oldTourn.getYearOfTourn());
-        newTourn.setPlayoffFlag(oldTourn.getPlayoffFlag());
+        newTourn.setIsPlayoffFlag(oldTourn.getIsPlayoffFlag());
 
         List<Team> teams = new ArrayList<>();
         List<Game> games = new ArrayList<>();

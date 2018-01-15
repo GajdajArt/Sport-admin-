@@ -4,18 +4,13 @@ package com.labralab.sporttournament.models;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.IgnoreExtraProperties;
-import com.labralab.sporttournament.MainActivity;
 import com.labralab.sporttournament.db.RealmDB;
-import com.labralab.sporttournament.db.TournDBHelper;
 import com.labralab.sporttournament.db.TournamentRepository;
 import com.labralab.sporttournament.fragments.StartFragment;
 import com.labralab.sporttournament.utils.TournamentUtil;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
@@ -119,7 +114,7 @@ public class Tournament extends RealmObject implements Serializable {
         this.gameList.addAll(tournament.getGameList());
         this.teamInPlayoff = tournament.getTeamInPlayoff();
         this.loops = tournament.getLoops();
-        this.isPlayoffFlag = tournament.getPlayoffFlag();
+        this.isPlayoffFlag = tournament.getIsPlayoffFlag();
 
 
         teamsCount = teamList.size();
@@ -158,7 +153,7 @@ public class Tournament extends RealmObject implements Serializable {
 
 
     //Getters and Setters
-    public Boolean getPlayoffFlag() {
+    public Boolean getIsPlayoffFlag() {
         return isPlayoffFlag;
     }
 
@@ -255,7 +250,7 @@ public class Tournament extends RealmObject implements Serializable {
         this.playoff = playoff;
     }
 
-    public void setPlayoffFlag(Boolean playoffFlag) {
+    public void setIsPlayoffFlag(Boolean playoffFlag) {
         isPlayoffFlag = playoffFlag;
     }
 
