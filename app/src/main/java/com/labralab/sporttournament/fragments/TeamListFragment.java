@@ -61,7 +61,7 @@ public class TeamListFragment extends Fragment {
         statAdapter = new TeamStatAdapter(items);
         recyclerView.setAdapter(statAdapter);
 
-        if (tournament.isPlayoff(getActivity())) {
+        if (tournament.getIsPlayoffFlag()) {
 
             TeamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
          } else {
@@ -96,7 +96,7 @@ public class TeamListFragment extends Fragment {
                     // Scroll Down
                     if (fab.isShown()) {
 
-                        if (Tournament.getInstance().isPlayoff(getActivity())) {
+                        if (Tournament.getInstance().isPlayoff()) {
                             final Animation fallingAnimation = AnimationUtils.loadAnimation(recyclerView.getContext(),
                                     R.anim.out_doun);
                             fallingAnimation.setInterpolator(new LinearInterpolator());
@@ -110,7 +110,7 @@ public class TeamListFragment extends Fragment {
                     // Scroll Up
                     if (!fab.isShown()) {
                         fab.show();
-                        if (Tournament.getInstance().isPlayoff(getActivity())) {
+                        if (Tournament.getInstance().isPlayoff()) {
                             final Animation fallingAnimation = AnimationUtils.loadAnimation(recyclerView.getContext(),
                                     R.anim.in_up);
                             fallingAnimation.setInterpolator(new LinearOutSlowInInterpolator());

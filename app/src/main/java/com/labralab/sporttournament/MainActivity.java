@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.labralab.sporttournament.fragments.NewTournFragment;
+import com.labralab.sporttournament.fragments.TournamentFragment;
 import com.labralab.sporttournament.fragments.SplashFragment;
 import com.labralab.sporttournament.fragments.StartFragment;
 
@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static StartFragment startFragment;
-    private static NewTournFragment newTournFragment;
+    private static TournamentFragment tournamentFragment;
     private static Toolbar toolbar;
     private static FragmentManager fragmentManager;
     SharedPreferences sPref;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Creating instances of fragments
         startFragment = new StartFragment();
-        newTournFragment = new NewTournFragment();
+        tournamentFragment = new TournamentFragment();
 
         //Connect to Support Fragment Manage
         fragmentManager = getSupportFragmentManager();
@@ -101,9 +101,9 @@ public class MainActivity extends AppCompatActivity {
     public static StartFragment getStartFragment() {
         return startFragment;
     }
-    //For getting newTournFragment
-    public static NewTournFragment getNewTournFragment() {
-        return newTournFragment;
+    //For getting tournamentFragment
+    public static TournamentFragment getTournamentFragment() {
+        return tournamentFragment;
     }
     //For getting toolbar
     public static Toolbar getToolbar() {

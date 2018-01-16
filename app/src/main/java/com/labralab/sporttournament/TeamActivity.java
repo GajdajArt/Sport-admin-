@@ -47,7 +47,6 @@ public class TeamActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
-
         //Setting tittle
         toolbar.setTitle(tournTitle);
 

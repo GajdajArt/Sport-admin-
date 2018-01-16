@@ -9,8 +9,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.labralab.sporttournament.TeamActivity;
 import com.labralab.sporttournament.adapters.TournAdapter;
-import com.labralab.sporttournament.fragments.EditTournamentFragment;
+import com.labralab.sporttournament.fragments.TournamentFragment;
 import com.labralab.sporttournament.fragments.StartFragment;
 import com.labralab.sporttournament.fragments.TeamTabFragment;
 import com.labralab.sporttournament.MainActivity;
@@ -91,7 +92,7 @@ public class QuickActionDialog {
                                 Bundle bundle = new Bundle();
                                 bundle.putString("title", title);
 
-                                EditTournamentFragment editTournamentFragment = new EditTournamentFragment();
+                                TournamentFragment editTournamentFragment = new TournamentFragment();
                                 editTournamentFragment.setArguments(bundle);
 
                                 AppCompatActivity activity_1 = (AppCompatActivity) view.getContext();
@@ -159,9 +160,9 @@ public class QuickActionDialog {
                                 break;
                             case 2:
 
-                                EditTournamentFragment.getTeams().
-                                        remove(TournamentUtil.getTeam(EditTournamentFragment.getTeams(), title));
-                                EditTournamentFragment.getAdapter().notifyDataSetChanged();
+                                TournamentFragment.getTeams().
+                                        remove(TournamentUtil.getTeam(TournamentFragment.getTeams(), title));
+                                TournamentFragment.getAdapter().notifyDataSetChanged();
                                 break;
                             case 3:
 
@@ -179,8 +180,8 @@ public class QuickActionDialog {
 
                                         TeamTabFragment.teamListFragment.onStart();
                                         TeamTabFragment.gameListFragment.onStart();
+                                        TeamActivity.getPlayoffFragment().onStart();
                                         dialog.cancel();
-
 
                                     }
                                 });

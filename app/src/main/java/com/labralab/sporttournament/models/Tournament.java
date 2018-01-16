@@ -51,12 +51,12 @@ public class Tournament extends RealmObject implements Serializable {
         this.loops = loops;
         this.isPlayoffFlag = false;
 
-        if(gameList != null){
+        if (gameList != null) {
             this.gameList.addAll(gameList);
         }
 
         if (gameList != null) {
-            isPlayoff(context);
+            isPlayoff();
         }
         //Добавляем турнир в базу данных при создании
 
@@ -68,11 +68,13 @@ public class Tournament extends RealmObject implements Serializable {
 //        }
         teamsCount = teamList.size();
         maxCountGame = ((teamsCount * (teamsCount - 1)) / 2) * loops;
-//
-//
-        repository = new RealmDB();
-        repository.createTournament(this);
+
+        if (!isPlayoffFlag) {
+            repository = new RealmDB();
+            repository.createTournament(this);
+        }
     }
+
     //Constructor for creating new Tournament
     public Tournament(String title, String yearOfTourn, String type, List<Team> teamList,
                       List<Game> gameList, int teamInPlayoff, int loops, Boolean isPlayoffFlag) {
@@ -84,7 +86,7 @@ public class Tournament extends RealmObject implements Serializable {
         this.loops = loops;
         this.isPlayoffFlag = isPlayoffFlag;
 
-        if(gameList != null){
+        if (gameList != null) {
             this.gameList.addAll(gameList);
         }
 
@@ -130,6 +132,7 @@ public class Tournament extends RealmObject implements Serializable {
     public Tournament() {
 
     }
+
     //Methods for getting Instance
     public static Tournament getInstance(String title, Context context) {
 
@@ -145,8 +148,8 @@ public class Tournament extends RealmObject implements Serializable {
         return instance;
     }
 
-    public void onDestroy(){
-        if(instance != null){
+    public void onDestroy() {
+        if (instance != null) {
             instance = null;
         }
     }
@@ -350,7 +353,7 @@ public class Tournament extends RealmObject implements Serializable {
         }
         remove(title);
         repository.createTournament(this);
-        isPlayoff(context);
+        isPlayoff();
 
         realm.commitTransaction();
     }
@@ -398,7 +401,9 @@ public class Tournament extends RealmObject implements Serializable {
             }
         }
         gameList.remove(id);
+        isPlayoff();
         realm.commitTransaction();
+
         recreateTournament();
 
     }
@@ -432,7 +437,7 @@ public class Tournament extends RealmObject implements Serializable {
     }
 
     //Method for checking whether the playoff started
-    public boolean isPlayoff(Context context) {
+    public boolean isPlayoff() {
 
         Realm realm = Realm.getDefaultInstance();
 
@@ -453,7 +458,12 @@ public class Tournament extends RealmObject implements Serializable {
                 repository.createTournament(this);
             }
         } else {
-            playoff = repository.getTournament(title).getPlayoff();
+            if (gameList.size() < maxCountGame) {
+                playoff = null;
+                isPlayoffFlag = false;
+            } else {
+                playoff = repository.getTournament(title).getPlayoff();
+            }
         }
 
         if (flag) {

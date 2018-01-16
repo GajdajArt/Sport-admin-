@@ -11,8 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.labralab.sporttournament.fragments.EditTournamentFragment;
-import com.labralab.sporttournament.fragments.NewTournFragment;
+import com.labralab.sporttournament.fragments.TournamentFragment;
 import com.labralab.sporttournament.R;
 import com.labralab.sporttournament.utils.TournamentUtil;
 
@@ -59,17 +58,17 @@ public class NewTeamDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                //Если диалог вызван дляредактирования команд, то следует удалить
+                //Если диалог вызван для редактирования команд, то следует удалить
                 // из списка команду со старым названием
                 if (NewTeamDialog.this.getArguments() != null) {
 
                     //Проверяем есть ли в списке команда с таким названием и добавляем новую команду
-                    boolean isAdded = EditTournamentFragment.addTeam(etTitle.getText().toString());
+                    boolean isAdded = TournamentFragment.addTeam(etTitle.getText().toString());
                     if (isAdded) {
 
-                        EditTournamentFragment.getTeams().
-                                remove(TournamentUtil.getTeam(EditTournamentFragment.getTeams(), temeTitle));
-                        EditTournamentFragment.getAdapter().notifyDataSetChanged();
+                        TournamentFragment.getTeams().
+                                remove(TournamentUtil.getTeam(TournamentFragment.getTeams(), temeTitle));
+                        TournamentFragment.getAdapter().notifyDataSetChanged();
                         dialog.dismiss();
 
                     } else {
@@ -77,12 +76,12 @@ public class NewTeamDialog extends DialogFragment {
                     }
 
                 } else {
-                    if (NewTournFragment.adapter != null) {
+                    if (TournamentFragment.adapter != null) {
                         //Проверяем есть ли в списке команда с таким названием и добавляем новую команду
-                        boolean isAdded = NewTournFragment.addTeam(etTitle.getText().toString());
+                        boolean isAdded = TournamentFragment.addTeam(etTitle.getText().toString());
                         if (isAdded) {
 
-                            NewTournFragment.adapter.notifyDataSetChanged();
+                            TournamentFragment.adapter.notifyDataSetChanged();
                             dialog.dismiss();
 
 
@@ -90,11 +89,11 @@ public class NewTeamDialog extends DialogFragment {
                             Toast.makeText(getContext(), R.string.that_team_already_exists, Toast.LENGTH_SHORT).show();
                         }
                     }
-                    if(EditTournamentFragment.getAdapter() != null){
-                        boolean isAdded = EditTournamentFragment.addTeam(etTitle.getText().toString());
+                    if(TournamentFragment.getAdapter() != null){
+                        boolean isAdded = TournamentFragment.addTeam(etTitle.getText().toString());
                         if (isAdded) {
 
-                            EditTournamentFragment.getAdapter().notifyDataSetChanged();
+                            TournamentFragment.getAdapter().notifyDataSetChanged();
                             dialog.dismiss();
 
 
@@ -122,9 +121,6 @@ public class NewTeamDialog extends DialogFragment {
 
     }//onCreateDialog
 
-    public void editTeam() {
-
-    }
 }//NewTeamDialog
 
 

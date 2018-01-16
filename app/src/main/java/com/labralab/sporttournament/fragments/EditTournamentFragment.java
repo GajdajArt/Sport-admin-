@@ -124,13 +124,13 @@ public class EditTournamentFragment extends Fragment {
             etYear.setText(tournament.getYearOfTourn());
 
             String type = tournament.getType().toString();
-            spTournType.setSelection(UiUtil.getSpinnerPosition(type, tournType));
+            spTournType.setSelection(UiUtil.getSpinnerPosition(type, tournType) + 1);
 
             int mTeamInPlayoff = tournament.getTeamInPlayoff();
-            spInPlayoff.setSelection(UiUtil.getSpinnerPosition( mTeamInPlayoff, teamInPlayoff));
+            spInPlayoff.setSelection(UiUtil.getSpinnerPosition( mTeamInPlayoff, teamInPlayoff) + 1);
 
             int mLoop = tournament.getLoops();
-            spLoops.setSelection(UiUtil.getSpinnerPosition( mLoop, loops));
+            spLoops.setSelection(UiUtil.getSpinnerPosition( mLoop, loops) + 1);
 
             //Checking number of games. If there is no game, we can edit team list
             if (tournament.getGameList().size() == 0) {

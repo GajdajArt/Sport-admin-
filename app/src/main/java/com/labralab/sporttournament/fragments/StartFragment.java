@@ -1,6 +1,5 @@
 package com.labralab.sporttournament.fragments;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,7 +23,6 @@ import com.labralab.sporttournament.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 
 public class StartFragment extends Fragment {
@@ -121,7 +119,7 @@ public class StartFragment extends Fragment {
 
         //Starting newTournFragment
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, MainActivity.getNewTournFragment())
+                .replace(R.id.container, MainActivity.getTournamentFragment())
                 .addToBackStack(null)
                 .commit();
     }
