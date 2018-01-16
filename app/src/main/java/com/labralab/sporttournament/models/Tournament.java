@@ -197,14 +197,6 @@ public class Tournament extends RealmObject implements Serializable {
         return type;
     }
 
-    public TournamentRepository getRepository() {
-        return repository;
-    }
-
-    public void setRepository(TournamentRepository repository) {
-        this.repository = repository;
-    }
-
     public void setYearOfTourn(String yearOfTourn) {
         this.yearOfTourn = yearOfTourn;
     }
@@ -356,7 +348,7 @@ public class Tournament extends RealmObject implements Serializable {
                 }
             }
         }
-        remove(title, context);
+        remove(title);
         repository.createTournament(this);
         isPlayoff(context);
 
@@ -365,6 +357,9 @@ public class Tournament extends RealmObject implements Serializable {
 
     //Method for removing game
     public void removeGame(String teamOne, String teamTwo) {
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
 
         int id = TournamentUtil.getGame(gameList, teamOne, teamTwo);
 
@@ -403,6 +398,8 @@ public class Tournament extends RealmObject implements Serializable {
             }
         }
         gameList.remove(id);
+        realm.commitTransaction();
+        recreateTournament();
 
     }
 
@@ -417,7 +414,7 @@ public class Tournament extends RealmObject implements Serializable {
     }
 
     //Method for removing Tournament
-    public void remove(String title, Context context) {
+    public void remove(String title) {
         repository = new RealmDB();
         repository.delTournament(title, isPlayoffFlag);
     }
@@ -429,8 +426,8 @@ public class Tournament extends RealmObject implements Serializable {
     }
 
     //Method fof making changes
-    public void recreateTournament(Context context) {
-        remove(title, context);
+    public void recreateTournament() {
+        remove(title);
         repository.createTournament(this);
     }
 
@@ -454,10 +451,6 @@ public class Tournament extends RealmObject implements Serializable {
                 playoff = new Playoff(teamList, teamInPlayoff, title);
                 repository.delTournament(title, isPlayoffFlag);
                 repository.createTournament(this);
-//
-//                //Создаем таблицы в базе данных
-//                repository.createPlayoff(title, playoff.getCountGames(), teamInPlayoff,
-//                        playoff.getPlayoffTeamList(), playoff.getPlayoffGameList());
             }
         } else {
             playoff = repository.getTournament(title).getPlayoff();

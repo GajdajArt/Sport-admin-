@@ -92,8 +92,10 @@ public class NewGameDialog extends DialogFragment {
 
                     Tournament.getInstance().addGame(teamOne, teamTwo, scoreOne, scoreTwo, getActivity(), day, month, year);
 
+
                     TeamTabFragment.teamListFragment.onStart();
                     TeamTabFragment.gameListFragment.onStart();
+                    TeamActivity.getPlayoffFragment().onStart();
                     dialog.dismiss();
 
                 } else {

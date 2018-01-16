@@ -53,6 +53,35 @@ public class TeamActivity extends AppCompatActivity {
 
         //Creating instance of Tournament
         tournament = Tournament.getInstance(tournTitle, this);
+        showContent();
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //Killing Tournament instance
+        tournament.onDestroy();
+    }
+
+    //For getting playoffFragment
+    public static PlayoffFragment getPlayoffFragment() {
+        return playoffFragment;
+    }
+    //For getting segmentTabLayout
+    public static SegmentTabLayout getSegmentTabLayout() {
+        return segmentTabLayout;
+    }
+
+    public void showContent(){
 
         //List of Fragments for Segment Tab Layout
         ArrayList<Fragment> mFragments = new ArrayList<>();
@@ -62,13 +91,7 @@ public class TeamActivity extends AppCompatActivity {
         //Playoff fragment
         playoffFragment = new PlayoffFragment();
         mFragments.add(teamTabFragment);
-
-        //Listening playoff start
-        if (tournament.getPlayoff() != null) {
-
-            mFragments.add(playoffFragment);
-            tournament.recreateTournament(this);
-        }
+        mFragments.add(playoffFragment);
 
         //Segment Tabs titles
         String[] mTitles = {getString(R.string.tournament), getString(R.string.playoff)};
@@ -116,39 +139,6 @@ public class TeamActivity extends AppCompatActivity {
             public void onTabReselect(int position) {
             }
         });
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        //Killing Tournament instance
-        tournament.onDestroy();
-    }
-
-    //For getting playoffFragment
-    public static PlayoffFragment getPlayoffFragment() {
-        return playoffFragment;
-    }
-    //For getting segmentTabLayout
-    public static SegmentTabLayout getSegmentTabLayout() {
-        return segmentTabLayout;
-    }
-
-    public void showPlayoff(){
-
-        if (tournament.isPlayoff(this)) {
-            segmentTabLayout.setVisibility(View.VISIBLE);
-        } else {
-            segmentTabLayout.setVisibility(View.INVISIBLE);
-        }
     }
 }
 

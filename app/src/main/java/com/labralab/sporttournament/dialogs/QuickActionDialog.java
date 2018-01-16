@@ -135,7 +135,7 @@ public class QuickActionDialog {
                                     public void onClick(DialogInterface dialog, int which) {
 
                                         Tournament tournament = new Tournament();
-                                        tournament.remove(title, view.getContext());
+                                        tournament.remove(title);
                                         tournament.removePlayoff(title, view.getContext());
                                         MainActivity.getStartFragment().onStart();
                                         TournAdapter.items = Tournament.getTournList(MainActivity.getStartFragment());
@@ -175,7 +175,7 @@ public class QuickActionDialog {
                                     public void onClick(DialogInterface dialog, int which) {
 
                                         Tournament.getInstance().removeGame(teameOne, teameTwo);
-                                        Tournament.getInstance().recreateTournament(view.getContext());
+                                        Tournament.getInstance().recreateTournament();
 
                                         TeamTabFragment.teamListFragment.onStart();
                                         TeamTabFragment.gameListFragment.onStart();

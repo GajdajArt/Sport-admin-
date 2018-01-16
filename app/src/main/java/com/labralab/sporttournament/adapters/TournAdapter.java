@@ -94,7 +94,7 @@ class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnLongC
         //Запускаем TeamActivity с заданным турниром
         Context context = view.getContext();
         Intent intent = new Intent(context, TeamActivity.class);
-        String tableName = title.getText().toString().replace(" ", "_");
+        String tableName = title.getText().toString();
         intent.putExtra("title", tableName);
         view.getContext().startActivity(intent);
 

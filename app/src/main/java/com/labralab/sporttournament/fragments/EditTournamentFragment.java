@@ -159,7 +159,7 @@ public class EditTournamentFragment extends Fragment {
                     int teamInPlaypff = Integer.parseInt(spInPlayoff.getSelectedItem().toString());
                     int loops = Integer.parseInt(spLoops.getSelectedItem().toString());
 
-                    tournament.remove(bundle.getString("title"), getActivity());
+                    tournament.remove(bundle.getString("title"));
                     Tournament newTournament = new Tournament(etTitle.getText().toString(),
                             etYear.getText().toString(),
                             spTournType.getSelectedItem().toString(),
@@ -172,7 +172,7 @@ public class EditTournamentFragment extends Fragment {
                     int teamInPlaypff = tournament.getTeamInPlayoff();
                     int loops = tournament.getLoops();
 
-                    tournament.remove(bundle.getString("title"), getActivity());
+                    tournament.remove(bundle.getString("title"));
                     Tournament newTournament = new Tournament(etTitle.getText().toString(),
                             etYear.getText().toString(),
                             type,

@@ -50,15 +50,10 @@ public class PlayoffFragment extends Fragment {
     Playoff playoff;
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        playoff = Tournament.getInstance().getPlayoff();
-        teamInPlayoff = playoff.getTeamInPlayoff();
         view = inflater.inflate(R.layout.fragment_playoff, container, false);
-
         return view;
 
     }//onCreate
@@ -67,37 +62,41 @@ public class PlayoffFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        display = getActivity().getWindowManager().getDefaultDisplay();
+        if (Tournament.getInstance().getIsPlayoffFlag()) {
 
-        playoff = Tournament.getInstance().getPlayoff();
+            display = getActivity().getWindowManager().getDefaultDisplay();
 
-        ImageView logo = (ImageView) getActivity().findViewById(R.id.playoff_logo);
+            playoff = Tournament.getInstance().getPlayoff();
+            teamInPlayoff = playoff.getTeamInPlayoff();
 
-        if(Tournament.getInstance().getType().equals("Футбол")){
-            logo.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.f1f));
-        }else {
-            logo.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.b1b));
+            ImageView logo = (ImageView) getActivity().findViewById(R.id.playoff_logo);
+
+            if (Tournament.getInstance().getType().equals("Футбол")) {
+                logo.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.f1f));
+            } else {
+                logo.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.b1b));
+            }
+
+            firstTur = new ArrayList<>();
+            secondTur = new ArrayList<>();
+            lastTur = new ArrayList<>();
+
+
+            firstRVStart();
+
+            switch (teamInPlayoff) {
+                case 8:
+                    secondRVStart();
+                    lastRVStart();
+                    break;
+                case 4:
+                    lastRVStart();
+                    break;
+
+            }
+
+
         }
-
-        firstTur = new ArrayList<>();
-        secondTur = new ArrayList<>();
-        lastTur = new ArrayList<>();
-
-
-        firstRVStart();
-
-        switch (teamInPlayoff) {
-            case 8:
-                secondRVStart();
-                lastRVStart();
-                break;
-            case 4:
-                lastRVStart();
-                break;
-
-        }
-
-
     }
 
     private void firstRVStart() {

@@ -62,6 +62,7 @@ public class TeamListFragment extends Fragment {
         recyclerView.setAdapter(statAdapter);
 
         if (tournament.isPlayoff(getActivity())) {
+
             TeamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
          } else {
             TeamActivity.getSegmentTabLayout().setVisibility(View.INVISIBLE);
