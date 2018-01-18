@@ -23,11 +23,11 @@ import java.util.ArrayList;
 public class TeamActivity extends AppCompatActivity {
 
     private TeamTabFragment teamTabFragment;
-    private static PlayoffFragment playoffFragment;
-    private static Tournament tournament;
+    private PlayoffFragment playoffFragment;
+    private Tournament tournament;
     private String tournTitle;
     private Toolbar toolbar;
-    private static SegmentTabLayout segmentTabLayout;
+    private SegmentTabLayout segmentTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +72,16 @@ public class TeamActivity extends AppCompatActivity {
     }
 
     //For getting playoffFragment
-    public static PlayoffFragment getPlayoffFragment() {
+    public PlayoffFragment getPlayoffFragment() {
         return playoffFragment;
     }
     //For getting segmentTabLayout
-    public static SegmentTabLayout getSegmentTabLayout() {
+    public SegmentTabLayout getSegmentTabLayout() {
         return segmentTabLayout;
+    }
+
+    public TeamTabFragment getTeamTabFragment() {
+        return teamTabFragment;
     }
 
     public void showContent(){
@@ -109,7 +113,7 @@ public class TeamActivity extends AppCompatActivity {
                     case 0:
 
                         //Making animation
-                        ObjectAnimator upObjectAnimator = ObjectAnimator.ofFloat(TeamActivity.segmentTabLayout, View.TRANSLATION_Y, 130, 0);
+                        ObjectAnimator upObjectAnimator = ObjectAnimator.ofFloat(TeamActivity.this.segmentTabLayout, View.TRANSLATION_Y, 130, 0);
                         upObjectAnimator.setInterpolator(new OvershootInterpolator());
                         upObjectAnimator.setDuration(700);
                         upObjectAnimator.start();
@@ -120,7 +124,7 @@ public class TeamActivity extends AppCompatActivity {
                     case 1:
 
                         //Making animation
-                        ObjectAnimator downObjectAnimator = ObjectAnimator.ofFloat(TeamActivity.segmentTabLayout, View.TRANSLATION_Y, 0, 130);
+                        ObjectAnimator downObjectAnimator = ObjectAnimator.ofFloat(TeamActivity.this.segmentTabLayout, View.TRANSLATION_Y, 0, 130);
                         downObjectAnimator.setInterpolator(new OvershootInterpolator());
                         downObjectAnimator.setDuration(700);
                         downObjectAnimator.start();

@@ -31,9 +31,12 @@ public class QuickActionDialog {
     private static final int ID_EDIT = 1;
     private static final int ID_DELETE = 2;
 
+    private static final int ID_TOURNAMENT = 1;
+    private static final int ID_TEAM = 2;
+    private static final int ID_GAME = 3;
+
     final View view;
     final String title;
-    int position;
 
     private QuickAction quickAction;
     int adapterID;
@@ -88,7 +91,7 @@ public class QuickActionDialog {
                         switch (adapterID) {
 
                             //Tournament list
-                            case 1:
+                            case ID_TOURNAMENT:
                                 Bundle bundle = new Bundle();
                                 bundle.putString("title", title);
 
@@ -104,7 +107,8 @@ public class QuickActionDialog {
                                         addToBackStack(null).
                                         commit();
                                 break;
-                            case 2:
+
+                            case ID_TEAM:
                                 Bundle teamBundle = new Bundle();
                                 teamBundle.putString("teamTitle", title);
                                 DialogFragment newTeamDialog = new NewTeamDialog();
@@ -115,7 +119,8 @@ public class QuickActionDialog {
                                 newTeamDialog.show(fragmentManager, "TAG");
 
                                 break;
-                            case 3:
+
+                            case ID_GAME:
                                 AppCompatActivity activity_3 = (AppCompatActivity) view.getContext();
                                 FragmentManager fragmentManager_3 = activity_3.getSupportFragmentManager();
                                 editGameDialog.show(fragmentManager_3, "Tag");
@@ -127,7 +132,7 @@ public class QuickActionDialog {
                         switch (adapterID) {
 
                             //Tournament list
-                            case 1:
+                            case ID_TOURNAMENT:
 
                                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
                                 builder.setMessage("Удалить " + title + "?");
@@ -138,10 +143,12 @@ public class QuickActionDialog {
                                         Tournament tournament = new Tournament();
                                         tournament.remove(title);
                                         tournament.removePlayoff(title, view.getContext());
-                                        MainActivity.getStartFragment().onStart();
-                                        TournAdapter.items = Tournament.getTournList(MainActivity.getStartFragment());
 
-                                        StartFragment startFragment = MainActivity.getStartFragment();
+                                        MainActivity mainActivity = (MainActivity) view.getContext();
+                                        mainActivity.getStartFragment().onStart();
+                                        TournAdapter.items = Tournament.getTournList(mainActivity.getStartFragment());
+
+                                        StartFragment startFragment = mainActivity.getStartFragment();
                                         startFragment.getAdapter().notifyDataSetChanged();
 
                                         dialog.cancel();
@@ -158,13 +165,18 @@ public class QuickActionDialog {
                                 AlertDialog alertDialog = builder.create();
                                 builder.show();
                                 break;
-                            case 2:
 
-                                TournamentFragment.getTeams().
-                                        remove(TournamentUtil.getTeam(TournamentFragment.getTeams(), title));
-                                TournamentFragment.getAdapter().notifyDataSetChanged();
+                            case ID_TEAM:
+
+                                MainActivity mainActivity = (MainActivity) view.getContext();
+                                TournamentFragment tournamentFragment = mainActivity.getTournamentFragment();
+
+                                tournamentFragment.getTeams().
+                                        remove(TournamentUtil.getTeam(tournamentFragment.getTeams(), title));
+                                tournamentFragment.getAdapter().notifyDataSetChanged();
                                 break;
-                            case 3:
+
+                            case ID_GAME:
 
                                 final String teameOne = bundle.getString("teamOne");
                                 final String teameTwo = bundle.getString("teamTwo");
@@ -178,9 +190,11 @@ public class QuickActionDialog {
                                         Tournament.getInstance().removeGame(teameOne, teameTwo);
                                         Tournament.getInstance().recreateTournament();
 
-                                        TeamTabFragment.teamListFragment.onStart();
-                                        TeamTabFragment.gameListFragment.onStart();
-                                        TeamActivity.getPlayoffFragment().onStart();
+                                        TeamActivity teamActivity = (TeamActivity) view.getContext();
+
+                                        teamActivity.getTeamTabFragment().teamListFragment.onStart();
+                                        teamActivity.getTeamTabFragment().gameListFragment.onStart();
+                                        teamActivity.getPlayoffFragment().onStart();
                                         dialog.cancel();
 
                                     }

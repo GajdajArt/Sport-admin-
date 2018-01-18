@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 
+import com.labralab.sporttournament.TeamActivity;
 import com.labralab.sporttournament.fragments.TeamTabFragment;
 import com.labralab.sporttournament.R;
 import com.labralab.sporttournament.models.Game;
@@ -24,73 +25,54 @@ import com.labralab.sporttournament.models.Team;
 import com.labralab.sporttournament.models.Tournament;
 import com.labralab.sporttournament.utils.TournamentUtil;
 
+import java.util.Calendar;
 import java.util.List;
 
 
-public class EditGameDialog extends DialogFragment {
+public class GameDialog extends DialogFragment {
+
+    AlertDialog.Builder builder;
+    View container;
 
     boolean teamOneTeameTwo;
 
     EditText edScoreOne;
     EditText edScoreTwo;
 
+    Spinner spTeamOne;
+    Spinner spTeamTwo;
+
     Button positiveButton;
-    String scoreOne;
 
     List<Team> teamList;
     List<Game> gameList;
+    Game oldGame;
+
+    String team_One;
+    String team_Two;
+
+    TeamActivity teamActivity;
 
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        teamActivity = (TeamActivity) getActivity();
+
         teamList = Tournament.getInstance().getTeamList();
         gameList = Tournament.getInstance().getGameList();
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        //sets a title for the dialog task
-        builder.setTitle(R.string.edit_game);
+        builder = new AlertDialog.Builder(getActivity());
+        setTitle();
 
         //object for working with Dialog
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         //find the layout.dialog_task and all the elements within it.
-        final View container = inflater.inflate(R.layout.game_dialog_maket, null);
+        container = inflater.inflate(R.layout.game_dialog_maket, null);
 
-        //final TournDBHelper dbHelper = new TournDBHelper(getActivity());
-
-        final Spinner spTeamOne = (Spinner) container.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapterOne = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item,
-                readTeamTitle(teamList));
-
-        adapterOne.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spTeamOne.setAdapter(adapterOne);
-
-        final Spinner spTeamTwo = (Spinner) container.findViewById(R.id.team_1);
-        ArrayAdapter<String> adapterTwo = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item,
-                readTeamTitle(teamList));
-
-        adapterTwo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spTeamTwo.setAdapter(adapterTwo);
-
-        edScoreOne = (EditText) container.findViewById(R.id.score_1);
-        edScoreTwo = (EditText) container.findViewById(R.id.score_2);
-
-        String score_One = this.getArguments().getString("scoreOne");
-        edScoreOne.setText(score_One);
-        String score_Two = this.getArguments().getString("scoreTwo");
-        edScoreTwo.setText(score_Two);
-
-        final String team_One = this.getArguments().getString("teamOne");
-        spTeamOne.setSelection(TournamentUtil.getTeam(teamList, team_One));
-
-        final String team_Two = this.getArguments().getString("teamTwo");
-        spTeamTwo.setSelection(TournamentUtil.getTeam(teamList, team_Two));
-
-        final Game oldGame = gameList.get(TournamentUtil.getGame(gameList,team_One, team_Two));
+        initUI();
+        setParams();
 
         builder.setView(container);
 
@@ -99,30 +81,40 @@ public class EditGameDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH) + 1;
+                int day = c.get(Calendar.DAY_OF_MONTH);
 
                 String teamOne = spTeamOne.getSelectedItem().toString();
                 String teamTwo = spTeamTwo.getSelectedItem().toString();
-
-
                 int scoreOne = Integer.parseInt(edScoreOne.getText().toString());
                 int scoreTwo = Integer.parseInt(edScoreTwo.getText().toString());
 
-                Tournament.getInstance().removeGame(team_One, team_Two);
 
-                if (Tournament.getInstance().checkGame(teamOne, teamTwo)){
+                if (GameDialog.this.getArguments() == null) {
 
+                    if (Tournament.getInstance().checkGame(teamOne, teamTwo)) {
+
+                        Tournament.getInstance().addGame(teamOne, teamTwo, scoreOne, scoreTwo, getActivity(), day, month, year);
+                    } else {
+                        Toast.makeText(getActivity(), R.string.that_game_already_exist, Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+
+                    Tournament.getInstance().removeGame(team_One, team_Two);
                     Tournament.getInstance().addGame(teamOne
                             , teamTwo
                             , scoreOne, scoreTwo, getContext()
                             , oldGame.getDay(), oldGame.getMonth(), oldGame.getYear());
-
-                    TeamTabFragment.teamListFragment.onStart();
-                    TeamTabFragment.gameListFragment.onStart();
-                    dialog.dismiss();
- }
-                else {
-                    Toast.makeText(getActivity(), R.string.that_game_already_exist, Toast.LENGTH_SHORT).show();
                 }
+
+                teamActivity.getTeamTabFragment().teamListFragment.onStart();
+                teamActivity.getTeamTabFragment().gameListFragment.onStart();
+                teamActivity.getPlayoffFragment().onStart();
+                dialog.dismiss();
+
 
             }
         });
@@ -158,7 +150,7 @@ public class EditGameDialog extends DialogFragment {
                 if (teamOne != teamTwo) {
                     teamOneTeameTwo = true;
                     positiveButtonEnable();
-                }else {
+                } else {
                     positiveButton.setEnabled(false);
                 }
             }
@@ -177,7 +169,7 @@ public class EditGameDialog extends DialogFragment {
                 if (teamOne != teamTwo) {
                     teamOneTeameTwo = true;
                     positiveButtonEnable();
-                }else {
+                } else {
                     positiveButton.setEnabled(false);
                 }
             }
@@ -225,23 +217,78 @@ public class EditGameDialog extends DialogFragment {
         return alertDialog;
     }
 
+    private void setTitle() {
+
+        if (this.getArguments() != null) {
+
+            builder.setTitle(R.string.edit_game);
+
+        } else {
+
+            builder.setTitle(R.string.new_game);
+        }
+    }
+
+    private void setParams() {
+
+        if (this.getArguments() != null) {
+
+            String score_One = this.getArguments().getString("scoreOne");
+            edScoreOne.setText(score_One);
+            String score_Two = this.getArguments().getString("scoreTwo");
+            edScoreTwo.setText(score_Two);
+
+            team_One = this.getArguments().getString("teamOne");
+            spTeamOne.setSelection(TournamentUtil.getTeam(teamList, team_One));
+
+            team_Two = this.getArguments().getString("teamTwo");
+            spTeamTwo.setSelection(TournamentUtil.getTeam(teamList, team_Two));
+
+            oldGame = gameList.get(TournamentUtil.getGame(gameList, team_One, team_Two));
+        }
+    }
+
+    private void initUI() {
+
+        spTeamOne = (Spinner) container.findViewById(R.id.spinner);
+        ArrayAdapter<String> adapterOne = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item,
+                readTeamTitle(teamList));
+
+        adapterOne.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTeamOne.setAdapter(adapterOne);
+
+        spTeamTwo = (Spinner) container.findViewById(R.id.team_1);
+        ArrayAdapter<String> adapterTwo = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item,
+                readTeamTitle(teamList));
+
+        adapterTwo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTeamTwo.setAdapter(adapterTwo);
+
+        edScoreOne = (EditText) container.findViewById(R.id.score_1);
+        edScoreTwo = (EditText) container.findViewById(R.id.score_2);
+    }
+
+
     private String[] readTeamTitle(List<Team> teams) {
 
         String[] titleList = new String[teams.size()];
-        for (int i = 0; i < teams.size(); i++){
+        for (int i = 0; i < teams.size(); i++) {
 
             String teamTitle = teams.get(i).getTitle();
-            titleList[i] = teamTitle;}
+            titleList[i] = teamTitle;
+        }
 
 
         return titleList;
     }
 
-    private int getIdItemTeam (String title, List<Team> teams){
+    private int getIdItemTeam(String title, List<Team> teams) {
         int id = 0;
         String[] titleList = readTeamTitle(teams);
-        for(int i = 0; i < titleList.length; i++){
-            String t  =  titleList[i];
+        for (int i = 0; i < titleList.length; i++) {
+            String t = titleList[i];
             if (t.equals(title)) {
                 id = i;
             }
@@ -249,16 +296,16 @@ public class EditGameDialog extends DialogFragment {
         return id;
     }
 
-    private void positiveButtonEnable (){
+    private void positiveButtonEnable() {
 
         if (teamOneTeameTwo
                 && edScoreTwo.getText().toString().trim().isEmpty() == false
-                && edScoreOne.getText().toString().trim().isEmpty() == false){
+                && edScoreOne.getText().toString().trim().isEmpty() == false) {
             positiveButton.setEnabled(true);
         } else {
             positiveButton.setEnabled(false);
         }
 
-   }
+    }
 }
 

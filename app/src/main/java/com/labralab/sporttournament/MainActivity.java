@@ -15,10 +15,10 @@ import com.labralab.sporttournament.fragments.StartFragment;
 public class MainActivity extends AppCompatActivity {
 
 
-    private static StartFragment startFragment;
-    private static TournamentFragment tournamentFragment;
-    private static Toolbar toolbar;
-    private static FragmentManager fragmentManager;
+    private  StartFragment startFragment;
+    private  TournamentFragment tournamentFragment;
+    private  Toolbar toolbar;
+    private  FragmentManager fragmentManager;
     SharedPreferences sPref;
     private static final String SPLASH = "splash";
 
@@ -98,15 +98,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //For getting startFragment
-    public static StartFragment getStartFragment() {
+    public StartFragment getStartFragment() {
         return startFragment;
     }
     //For getting tournamentFragment
-    public static TournamentFragment getTournamentFragment() {
+    public TournamentFragment getTournamentFragment() {
         return tournamentFragment;
     }
     //For getting toolbar
-    public static Toolbar getToolbar() {
+    public Toolbar getToolbar() {
         return toolbar;
     }
 }

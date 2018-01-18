@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.labralab.sporttournament.dialogs.EditGameDialog;
+import com.labralab.sporttournament.dialogs.GameDialog;
 import com.labralab.sporttournament.dialogs.QuickActionDialog;
 import com.labralab.sporttournament.R;
 import com.labralab.sporttournament.models.Game;
@@ -83,7 +83,7 @@ class GameViewHolder extends RecyclerView.ViewHolder implements
     @Override
     public boolean onLongClick(View view) {
 
-        DialogFragment editGameDialog = new EditGameDialog();
+        DialogFragment editGameDialog = new GameDialog();
         Bundle bundle = new Bundle();
         bundle.putString("teamOne", teamOneTV.getText().toString());
         bundle.putString("teamTwo", teamTwoTV.getText().toString());
@@ -102,7 +102,7 @@ class GameViewHolder extends RecyclerView.ViewHolder implements
     public void onClick(View view) {
 
 
-        DialogFragment editGameDialog = new EditGameDialog();
+        DialogFragment editGameDialog = new GameDialog();
         Bundle bundle = new Bundle();
         bundle.putString("teamOne", teamOneTV.getText().toString());
         bundle.putString("teamTwo", teamTwoTV.getText().toString());

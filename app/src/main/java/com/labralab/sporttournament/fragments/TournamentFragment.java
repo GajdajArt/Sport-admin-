@@ -39,8 +39,9 @@ import fr.ganfra.materialspinner.MaterialSpinner;
 
 public class TournamentFragment extends Fragment {
 
-    public static List<Team> teams = new ArrayList<>();
-    public static TeamAdapter adapter;
+    private List<Team> teams = new ArrayList<>();
+    private TeamAdapter adapter;
+    MainActivity mainActivity;
 
     FragmentManager fm;
     RecyclerView recyclerView;
@@ -87,6 +88,8 @@ public class TournamentFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        mainActivity = (MainActivity) getActivity();
+
         setToolbarTitle();
         initUI();
         setParams();
@@ -109,7 +112,7 @@ public class TournamentFragment extends Fragment {
     }
 
     //Method for adding teams to 'teams'
-    public static boolean addTeam(String title) {
+    public boolean addTeam(String title) {
         boolean isEqualsTeam = false;
         if (teams.size() > 0) {
             for (int i = 0; i < teams.size(); i++) {
@@ -132,11 +135,11 @@ public class TournamentFragment extends Fragment {
 
         //Setting toolBar title
         if (this.getArguments() == null) {
-            MainActivity.getToolbar().setTitle(R.string.new_tournament);
+            mainActivity.getToolbar().setTitle(R.string.new_tournament);
         } else {
-            MainActivity.getToolbar().setTitle(R.string.edit_tournament);
+            mainActivity.getToolbar().setTitle(R.string.edit_tournament);
         }
-        MainActivity.getToolbar().setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
+        mainActivity.getToolbar().setNavigationIcon(R.drawable.ic_arrow_back_white_24dp);
     }
 
     private void setParams() {
@@ -334,11 +337,11 @@ public class TournamentFragment extends Fragment {
         });
     }
 
-    public static List<Team> getTeams() {
+    public List<Team> getTeams() {
         return teams;
     }
 
-    public static TeamAdapter getAdapter() {
+    public TeamAdapter getAdapter() {
         return adapter;
     }
 }

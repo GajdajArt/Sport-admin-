@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SplashFragment extends Fragment {
 
-    AppCompatActivity mainActivity;
+    MainActivity mainActivity;
 
     public SplashFragment() {
         // Required empty public constructor
@@ -32,7 +32,7 @@ public class SplashFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_splash, container, false);
 
-        mainActivity = (AppCompatActivity) getActivity();
+        mainActivity = (MainActivity) getActivity();
         mainActivity.getSupportActionBar().hide();
 
         SplashTask splashTask = new SplashTask();
@@ -52,10 +52,10 @@ public class SplashFragment extends Fragment {
 
             //Saves the missions when users restart
             if (getActivity() != null) {
-                // Allows to apply to the FragmentManager
 
+                // Allows to apply to the FragmentManager
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, MainActivity.getStartFragment())
+                        .replace(R.id.container, mainActivity.getStartFragment())
                         .commit();
             }
 

@@ -15,7 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.OvershootInterpolator;
 
 import com.flyco.tablayout.SlidingTabLayout;
-import com.labralab.sporttournament.dialogs.NewGameDialog;
+import com.labralab.sporttournament.dialogs.GameDialog;
 import com.labralab.sporttournament.R;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class TeamTabFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment newGameDialog = new NewGameDialog();
+                DialogFragment newGameDialog = new GameDialog();
                 newGameDialog.show(getActivity().getSupportFragmentManager(), "TAG");
             }
         });

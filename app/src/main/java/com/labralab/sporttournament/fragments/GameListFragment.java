@@ -22,6 +22,8 @@ import com.labralab.sporttournament.models.Tournament;
 
 public class GameListFragment extends Fragment {
 
+    TeamActivity teamActivity;
+
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     public static GameAdapter gameAdapter;
@@ -40,6 +42,8 @@ public class GameListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        teamActivity = (TeamActivity) getActivity();
 
         recyclerView.setLayoutManager(layoutManager);
         gameAdapter = new GameAdapter(Tournament.getInstance().getGameList());
@@ -78,8 +82,8 @@ public class GameListFragment extends Fragment {
                         final Animation fallingAnimation = AnimationUtils.loadAnimation(recyclerView.getContext(),
                                 R.anim.out_doun);
                         fallingAnimation.setInterpolator(new LinearInterpolator());
-                        TeamActivity.getSegmentTabLayout().startAnimation(fallingAnimation);
-                        TeamActivity.getSegmentTabLayout().setVisibility(View.INVISIBLE);
+                        teamActivity.getSegmentTabLayout().startAnimation(fallingAnimation);
+                        teamActivity.getSegmentTabLayout().setVisibility(View.INVISIBLE);
                         fab.hide();
                         rvTouch = false;
                     }
@@ -90,8 +94,8 @@ public class GameListFragment extends Fragment {
                         final Animation fallingAnimation = AnimationUtils.loadAnimation(recyclerView.getContext(),
                                 R.anim.in_up);
                         fallingAnimation.setInterpolator(new LinearOutSlowInInterpolator());
-                        TeamActivity.getSegmentTabLayout().startAnimation(fallingAnimation);
-                        TeamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
+                        teamActivity.getSegmentTabLayout().startAnimation(fallingAnimation);
+                        teamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
                         rvTouch = false;
                     }
                 }

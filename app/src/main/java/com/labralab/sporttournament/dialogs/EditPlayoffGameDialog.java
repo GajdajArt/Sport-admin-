@@ -17,6 +17,7 @@ import android.widget.Spinner;
 
 import com.labralab.sporttournament.R;
 import com.labralab.sporttournament.TeamActivity;
+import com.labralab.sporttournament.fragments.PlayoffFragment;
 import com.labralab.sporttournament.models.Game;
 import com.labralab.sporttournament.models.Playoff;
 import com.labralab.sporttournament.models.Team;
@@ -41,9 +42,15 @@ public class EditPlayoffGameDialog extends DialogFragment {
     List<Team> teamList;
     List<Game> gameList;
 
+    PlayoffFragment playoffFragment;
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        TeamActivity teamActivity = (TeamActivity) getActivity();
+        playoffFragment = teamActivity.getPlayoffFragment();
+
 
         final Playoff playoff = Tournament.getInstance().getPlayoff();
 
@@ -119,7 +126,7 @@ public class EditPlayoffGameDialog extends DialogFragment {
                         , scoreOne, scoreTwo, getContext()
                         , oldGame.getDay(), oldGame.getMonth(), oldGame.getYear());
 
-                    TeamActivity.getPlayoffFragment().onStart();
+                    playoffFragment.onStart();
                     dialog.dismiss();
 
 

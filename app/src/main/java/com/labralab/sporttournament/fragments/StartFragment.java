@@ -30,10 +30,12 @@ public class StartFragment extends Fragment {
     private List<Tournament> items = new ArrayList<>();
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private static TournAdapter adapter;
+    private TournAdapter adapter;
     private Tournament tournament;
     private ProgressBar progressBar;
     private TextView hint;
+    private TournamentFragment tournamentFragment;
+    private MainActivity mainActivity;
 
     Handler handler;
 
@@ -55,8 +57,9 @@ public class StartFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        AppCompatActivity mainActivity = (AppCompatActivity) getActivity();
+        mainActivity = (MainActivity) getActivity();
         mainActivity.getSupportActionBar().show();
+        tournamentFragment = mainActivity.getTournamentFragment();
 
 
         adapter = new TournAdapter(items);
@@ -96,7 +99,7 @@ public class StartFragment extends Fragment {
 
     @Override
     public void onResume() {
-        MainActivity.getToolbar().setTitle(R.string.app_name);
+        mainActivity.getToolbar().setTitle(R.string.app_name);
         super.onResume();
     }
 
@@ -119,13 +122,13 @@ public class StartFragment extends Fragment {
 
         //Starting newTournFragment
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, MainActivity.getTournamentFragment())
+                .replace(R.id.container, tournamentFragment)
                 .addToBackStack(null)
                 .commit();
     }
 
     //For getting adapter
-    public static TournAdapter getAdapter() {
+    public TournAdapter getAdapter() {
         return adapter;
     }
 

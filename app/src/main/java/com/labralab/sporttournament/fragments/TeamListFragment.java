@@ -29,6 +29,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class TeamListFragment extends Fragment {
+
+    TeamActivity teamActivity;
+
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     public static TeamStatAdapter statAdapter;
@@ -52,6 +55,8 @@ public class TeamListFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        teamActivity = (TeamActivity) getActivity();
+
         Tournament tournament = Tournament.getInstance();
         //Getting TeamList
         List<Team> teamList = tournament.getTeamList();
@@ -63,9 +68,9 @@ public class TeamListFragment extends Fragment {
 
         if (tournament.getIsPlayoffFlag()) {
 
-            TeamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
+            teamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
          } else {
-            TeamActivity.getSegmentTabLayout().setVisibility(View.INVISIBLE);
+            teamActivity.getSegmentTabLayout().setVisibility(View.INVISIBLE);
         }
 
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
@@ -100,8 +105,8 @@ public class TeamListFragment extends Fragment {
                             final Animation fallingAnimation = AnimationUtils.loadAnimation(recyclerView.getContext(),
                                     R.anim.out_doun);
                             fallingAnimation.setInterpolator(new LinearInterpolator());
-                            TeamActivity.getSegmentTabLayout().startAnimation(fallingAnimation);
-                            TeamActivity.getSegmentTabLayout().setVisibility(View.INVISIBLE);
+                            teamActivity.getSegmentTabLayout().startAnimation(fallingAnimation);
+                            teamActivity.getSegmentTabLayout().setVisibility(View.INVISIBLE);
                         }
                         fab.hide();
                         rvTouch = false;
@@ -114,8 +119,8 @@ public class TeamListFragment extends Fragment {
                             final Animation fallingAnimation = AnimationUtils.loadAnimation(recyclerView.getContext(),
                                     R.anim.in_up);
                             fallingAnimation.setInterpolator(new LinearOutSlowInInterpolator());
-                            TeamActivity.getSegmentTabLayout().startAnimation(fallingAnimation);
-                            TeamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
+                            teamActivity.getSegmentTabLayout().startAnimation(fallingAnimation);
+                            teamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
                         }
                         rvTouch = false;
                     }
