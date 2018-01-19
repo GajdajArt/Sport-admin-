@@ -12,9 +12,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.labralab.sporttournament.dialogs.EditPlayoffGameDialog;
 import com.labralab.sporttournament.R;
+import com.labralab.sporttournament.dialogs.GameDialog;
 import com.labralab.sporttournament.models.Game;
 
 import java.util.ArrayList;
@@ -145,7 +144,6 @@ class GameInPlayoffViewHolder extends RecyclerView.ViewHolder implements
             dateTV = (TextView) itemView.findViewById(R.id.t_v_date);
         }
 
-
     }
 
 
@@ -162,8 +160,10 @@ class GameInPlayoffViewHolder extends RecyclerView.ViewHolder implements
 
         if (!teamOne.equals("__") && !teamTwo.equals("__")) {
 
-            DialogFragment editPlayoffGameDialog = new EditPlayoffGameDialog();
+            DialogFragment editPlayoffGameDialog = new GameDialog();
             Bundle bundle = new Bundle();
+
+            bundle.putInt("playoffID", 1);
             bundle.putString("teamOne", teamOneTV.getText().toString());
             bundle.putString("teamTwo", teamTwoTV.getText().toString());
             bundle.putString("scoreTwo", scoreTwoTV.getText().toString());

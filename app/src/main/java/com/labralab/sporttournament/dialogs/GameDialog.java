@@ -21,6 +21,7 @@ import com.labralab.sporttournament.TeamActivity;
 import com.labralab.sporttournament.fragments.TeamTabFragment;
 import com.labralab.sporttournament.R;
 import com.labralab.sporttournament.models.Game;
+import com.labralab.sporttournament.models.Playoff;
 import com.labralab.sporttournament.models.Team;
 import com.labralab.sporttournament.models.Tournament;
 import com.labralab.sporttournament.utils.TournamentUtil;
@@ -30,6 +31,9 @@ import java.util.List;
 
 
 public class GameDialog extends DialogFragment {
+
+    private static final int PLAYOFF_ID = 1;
+    Playoff playoff;
 
     AlertDialog.Builder builder;
     View container;
@@ -58,7 +62,6 @@ public class GameDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         teamActivity = (TeamActivity) getActivity();
-
         teamList = Tournament.getInstance().getTeamList();
         gameList = Tournament.getInstance().getGameList();
 
@@ -72,6 +75,18 @@ public class GameDialog extends DialogFragment {
         container = inflater.inflate(R.layout.game_dialog_maket, null);
 
         initUI();
+
+        if (this.getArguments() != null) {
+            if (this.getArguments().getInt("playoffID") == PLAYOFF_ID) {
+
+                playoff = Tournament.getInstance().getPlayoff();
+                teamList = playoff.getPlayoffTeamList();
+                gameList = playoff.getPlayoffGameList();
+                spTeamOne.setEnabled(false);
+                spTeamTwo.setEnabled(false);
+            }
+        }
+
         setParams();
 
         builder.setView(container);
@@ -103,11 +118,22 @@ public class GameDialog extends DialogFragment {
 
                 } else {
 
-                    Tournament.getInstance().removeGame(team_One, team_Two);
-                    Tournament.getInstance().addGame(teamOne
-                            , teamTwo
-                            , scoreOne, scoreTwo, getContext()
-                            , oldGame.getDay(), oldGame.getMonth(), oldGame.getYear());
+                    if (GameDialog.this.getArguments().getInt("playoffID") == PLAYOFF_ID) {
+
+                        playoff.addGame(teamOne
+                                , teamTwo
+                                , scoreOne, scoreTwo, getContext()
+                                , oldGame.getDay(), oldGame.getMonth(), oldGame.getYear());
+
+                    } else {
+
+                        Tournament.getInstance().removeGame(team_One, team_Two);
+                        Tournament.getInstance().addGame(teamOne
+                                , teamTwo
+                                , scoreOne, scoreTwo, getContext()
+                                , oldGame.getDay(), oldGame.getMonth(), oldGame.getYear());
+
+                    }
                 }
 
                 teamActivity.getTeamTabFragment().teamListFragment.onStart();
@@ -221,10 +247,15 @@ public class GameDialog extends DialogFragment {
 
         if (this.getArguments() != null) {
 
-            builder.setTitle(R.string.edit_game);
-
+            //if it is playoff game
+            if (this.getArguments().getInt("playoffID") == 1) {
+                builder.setTitle(R.string.game);
+            } else {
+                //if edit tournament game
+                builder.setTitle(R.string.edit_game);
+            }
         } else {
-
+            //if it is new game
             builder.setTitle(R.string.new_game);
         }
     }
