@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.labralab.sporttournament.dialogs.DateDialog;
 import com.labralab.sporttournament.dialogs.GameDialog;
 import com.labralab.sporttournament.dialogs.QuickActionDialog;
 import com.labralab.sporttournament.R;
@@ -46,6 +47,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameViewHolder> {
                 myMonth + "." +
                 item.getYear());
 
+
     }
 
     @Override
@@ -66,6 +68,7 @@ class GameViewHolder extends RecyclerView.ViewHolder implements
 
     View itemView;
 
+
     public GameViewHolder(View itemView) {
         super(itemView);
         this.itemView = itemView;
@@ -77,6 +80,23 @@ class GameViewHolder extends RecyclerView.ViewHolder implements
         scoreOneTV = (TextView) itemView.findViewById(R.id.score1);
         scoreTwoTV = (TextView) itemView.findViewById(R.id.score2);
         dateTV = (TextView) itemView.findViewById(R.id.t_v_date);
+
+        dateTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                FragmentManager fragmentManager = activity.getSupportFragmentManager();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("teamOne", teamOneTV.getText().toString());
+                bundle.putString("teamTwo", teamTwoTV.getText().toString());
+                bundle.putString("scoreTwo", scoreTwoTV.getText().toString());
+                bundle.putString("scoreOne", scoreOneTV.getText().toString());
+                DateDialog dateDialog = new DateDialog();
+                dateDialog.getDate(bundle, fragmentManager, "TAG");
+            }
+        });
     }
 
 

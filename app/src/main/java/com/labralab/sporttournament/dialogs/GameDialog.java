@@ -32,7 +32,7 @@ import java.util.List;
 
 public class GameDialog extends DialogFragment {
 
-    private static final int PLAYOFF_ID = 1;
+    static final int PLAYOFF_ID = 1;
     Playoff playoff;
 
     AlertDialog.Builder builder;
@@ -92,57 +92,15 @@ public class GameDialog extends DialogFragment {
         builder.setView(container);
 
         //Creates button OK in the bottom of the dialog
-        builder.setPositiveButton(R.string.add, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Далее", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                final Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH) + 1;
-                int day = c.get(Calendar.DAY_OF_MONTH);
-
-                String teamOne = spTeamOne.getSelectedItem().toString();
-                String teamTwo = spTeamTwo.getSelectedItem().toString();
-                int scoreOne = Integer.parseInt(edScoreOne.getText().toString());
-                int scoreTwo = Integer.parseInt(edScoreTwo.getText().toString());
-
-
-                if (GameDialog.this.getArguments() == null) {
-
-                    if (Tournament.getInstance().checkGame(teamOne, teamTwo)) {
-
-                        Tournament.getInstance().addGame(teamOne, teamTwo, scoreOne, scoreTwo, getActivity(), day, month, year);
-                    } else {
-                        Toast.makeText(getActivity(), R.string.that_game_already_exist, Toast.LENGTH_SHORT).show();
-                    }
-
-                } else {
-
-                    if (GameDialog.this.getArguments().getInt("playoffID") == PLAYOFF_ID) {
-
-                        playoff.addGame(teamOne
-                                , teamTwo
-                                , scoreOne, scoreTwo, getContext()
-                                , oldGame.getDay(), oldGame.getMonth(), oldGame.getYear());
-
-                    } else {
-
-                        Tournament.getInstance().removeGame(team_One, team_Two);
-                        Tournament.getInstance().addGame(teamOne
-                                , teamTwo
-                                , scoreOne, scoreTwo, getContext()
-                                , oldGame.getDay(), oldGame.getMonth(), oldGame.getYear());
-
-                    }
-                }
-
-                teamActivity.getTeamTabFragment().teamListFragment.onStart();
-                teamActivity.getTeamTabFragment().gameListFragment.onStart();
-                teamActivity.getPlayoffFragment().onStart();
-                dialog.dismiss();
-
+                DateDialog dateDialog = new DateDialog();
+                dateDialog.getDate(dialog,GameDialog.this, teamActivity.getSupportFragmentManager(), "TAG");
 
             }
+
         });
 
         //Creates button CANCEL in the bottom of the dialog
@@ -168,6 +126,7 @@ public class GameDialog extends DialogFragment {
 
             }
         });
+
         spTeamOne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -241,6 +200,66 @@ public class GameDialog extends DialogFragment {
 
 
         return alertDialog;
+    }
+
+    public void onOkClick(DialogInterface dialog, int[] date){
+
+//        final Calendar c = Calendar.getInstance();
+//        int year = c.get(Calendar.YEAR);
+//        int month = c.get(Calendar.MONTH) + 1;
+//        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        int year = date[0];
+        int month = date[1];
+        int day = date[2];
+
+        String teamOne = spTeamOne.getSelectedItem().toString();
+        String teamTwo = spTeamTwo.getSelectedItem().toString();
+        int scoreOne = Integer.parseInt(edScoreOne.getText().toString());
+        int scoreTwo = Integer.parseInt(edScoreTwo.getText().toString());
+
+
+        if (GameDialog.this.getArguments() == null) {
+
+            if (Tournament.getInstance().checkGame(teamOne, teamTwo)) {
+
+                Tournament.getInstance().addGame(teamOne
+                        , teamTwo
+                        , scoreOne
+                        , scoreTwo
+                        , getActivity()
+                        , day, month, year);
+
+            } else {
+                Toast.makeText(getActivity(), R.string.that_game_already_exist, Toast.LENGTH_SHORT).show();
+            }
+
+        } else {
+
+            if (GameDialog.this.getArguments().getInt("playoffID") == PLAYOFF_ID) {
+
+                playoff.addGame(teamOne
+                        , teamTwo
+                        , scoreOne, scoreTwo, getContext()
+                        , day, month, year);
+
+            } else {
+
+                Tournament.getInstance().removeGame(team_One, team_Two);
+                Tournament.getInstance().addGame(teamOne
+                        , teamTwo
+                        , scoreOne, scoreTwo, getContext()
+                        , day, month, year);
+
+            }
+        }
+
+        teamActivity.getTeamTabFragment().teamListFragment.onStart();
+        teamActivity.getTeamTabFragment().gameListFragment.onStart();
+        teamActivity.getPlayoffFragment().onStart();
+        dialog.dismiss();
+
+
     }
 
     private void setTitle() {

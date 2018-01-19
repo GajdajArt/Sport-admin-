@@ -23,13 +23,13 @@ import java.util.ArrayList;
 
 public class TeamTabFragment extends Fragment {
 
-    public static TeamListFragment teamListFragment;
-    public static GameListFragment gameListFragment;
+    public  TeamListFragment teamListFragment;
+    public  GameListFragment gameListFragment;
     private SlidingTabLayout mTabLayout;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
     private String[] mTitles = {"КОМАНДЫ", "ИГРЫ"};
-    public static Context context;
-    public static FloatingActionButton fab;
+    public  Context context;
+    public  FloatingActionButton fab;
 
     View view;
 

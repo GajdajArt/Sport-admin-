@@ -68,7 +68,7 @@ public class GameListFragment extends Fragment {
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
-            FloatingActionButton fab = TeamTabFragment.fab;
+            FloatingActionButton fab = teamActivity.getTeamTabFragment().fab;
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
