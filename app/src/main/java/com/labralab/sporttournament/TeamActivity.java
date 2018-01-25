@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.labralab.sporttournament.fragments.EditTeamPositionFragment;
 import com.labralab.sporttournament.fragments.PlayoffFragment;
 import com.labralab.sporttournament.fragments.TeamTabFragment;
 import com.labralab.sporttournament.models.Tournament;
@@ -54,6 +56,7 @@ public class TeamActivity extends AppCompatActivity {
         tournament = Tournament.getInstance(tournTitle, this);
         showContent();
 
+
     }
 
     @Override
@@ -75,6 +78,7 @@ public class TeamActivity extends AppCompatActivity {
     public PlayoffFragment getPlayoffFragment() {
         return playoffFragment;
     }
+
     //For getting segmentTabLayout
     public SegmentTabLayout getSegmentTabLayout() {
         return segmentTabLayout;
@@ -84,7 +88,7 @@ public class TeamActivity extends AppCompatActivity {
         return teamTabFragment;
     }
 
-    public void showContent(){
+    public void showContent() {
 
         //List of Fragments for Segment Tab Layout
         ArrayList<Fragment> mFragments = new ArrayList<>();
@@ -138,10 +142,13 @@ public class TeamActivity extends AppCompatActivity {
                         break;
                 }
             }
+
             @Override
             public void onTabReselect(int position) {
             }
         });
     }
+
+
 }
 

@@ -2,6 +2,7 @@ package com.labralab.sporttournament.models;
 
 
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.labralab.sporttournament.models.sort_item.TeamSortItem;
 
 import java.io.Serializable;
 
@@ -9,7 +10,7 @@ import io.realm.RealmObject;
 
 
 @IgnoreExtraProperties
-public class Team extends RealmObject implements Comparable<Team>, Serializable {
+public class Team extends RealmObject implements Comparable<Team>, Serializable{
 
 
     private String title;

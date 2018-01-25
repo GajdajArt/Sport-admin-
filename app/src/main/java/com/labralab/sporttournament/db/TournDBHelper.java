@@ -373,7 +373,7 @@ public class TournDBHelper extends SQLiteOpenHelper implements TournamentReposit
 
                 //Запускаем конструктор new Tournament
                 playoff = new Playoff(playoffTitle, playoffCursor.getInt(1),
-                        playoffCursor.getInt(2), gameList, teamList);
+                        playoffCursor.getInt(2), gameList, teamList, true);
 
             } while (playoffCursor.moveToNext());
         }

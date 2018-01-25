@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,8 +69,20 @@ public class TeamListFragment extends Fragment {
 
         if (tournament.getIsPlayoffFlag()) {
 
-            teamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
-         } else {
+            if (!tournament.getPlayoff().getIsTeamsSort() && tournament.getTeamInPlayoff() > 2) {
+
+                FragmentManager fragmentManager = teamActivity.getSupportFragmentManager();
+                EditTeamPositionFragment teamPositionFragment = new EditTeamPositionFragment();
+                fragmentManager.beginTransaction()
+                        .addToBackStack(null)
+                        .replace(R.id.team_container, teamPositionFragment)
+                        .commit();
+
+            } else {
+                teamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
+            }
+
+        } else {
             teamActivity.getSegmentTabLayout().setVisibility(View.INVISIBLE);
         }
 

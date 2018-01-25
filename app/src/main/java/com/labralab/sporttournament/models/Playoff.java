@@ -35,6 +35,10 @@ public class Playoff extends RealmObject {
     private RealmList<Game> playoffFirstTurGames;
     private RealmList<Game> playoffSecondTurGames;
     private RealmList<Game> playoffLastTurGames;
+
+
+    private boolean isTeamsSort;
+
     @Ignore
     private TournamentRepository repository;
 
@@ -56,6 +60,7 @@ public class Playoff extends RealmObject {
             this.playoffGameList = new RealmList<>();
             this.playoffLastTurGames = new RealmList<>();
             this.playoffSecondTurGames = new RealmList<>();
+            this.isTeamsSort = false;
 
             for (int i = 0; i < teamInPlayoff; i++) {
 
@@ -79,12 +84,13 @@ public class Playoff extends RealmObject {
         }
     }
 
-    public Playoff(String playoffTitle, int countGames, int teamInPlayoff, List<Game> playoffGameList, List<Team> playoffTeamList) {
+    public Playoff(String playoffTitle, int countGames, int teamInPlayoff, List<Game> playoffGameList, List<Team> playoffTeamList, boolean isTeamsSort) {
 
 
         this.playoffTitle = playoffTitle;
         this.countGames = countGames;
         this.teamInPlayoff = teamInPlayoff;
+        this.isTeamsSort = isTeamsSort;
         this.playoffGameList.addAll(playoffGameList);
         this.playoffTeamList.addAll(playoffTeamList);
     }
@@ -106,19 +112,58 @@ public class Playoff extends RealmObject {
             flag = true;
         }
 
-        List<Team> newTeamList = new ArrayList<>();
-        for (int i = 0; i < playoffTeamList.size() / 2; i++) {
+        if (!isTeamsSort) {
+            List<Team> newTeamList = new ArrayList<>();
+            for (int i = 0; i < playoffTeamList.size() / 2; i++) {
 
-            Game game = new Game(playoffTeamList.get(i),
-                    playoffTeamList.get((playoffTeamList.size() - 1) - i));
+                Game game = new Game(playoffTeamList.get(i),
+                        playoffTeamList.get((playoffTeamList.size() - 1) - i));
 
-            newTeamList.add(playoffTeamList.get(i));
-            newTeamList.add(playoffTeamList.get((playoffTeamList.size() - 1) - i));
+                newTeamList.add(playoffTeamList.get(i));
+                newTeamList.add(playoffTeamList.get((playoffTeamList.size() - 1) - i));
 
-            playoffGameList.add(game);
+                playoffGameList.add(game);
+            }
+            playoffTeamList.clear();
+            playoffTeamList.addAll(newTeamList);
+        }else {
+
+            playoffGameList.clear();
+            int i = 0;
+            while (i < playoffTeamList.size())  {
+
+                Game game = new Game(playoffTeamList.get(i),
+                        playoffTeamList.get(i+1));
+                i = i + 2;
+
+                playoffGameList.add(game);
+            }
         }
 
-        playoffTeamList.addAll(newTeamList);
+        if (flag) {
+            realm.commitTransaction();
+        }
+    }
+    public void setTeamListAfterSort(List<Team> teamList){
+
+        realm = Realm.getDefaultInstance();
+        boolean flag = false;
+        if (!realm.isInTransaction()) {
+            realm.beginTransaction();
+            flag = true;
+        }
+
+        this.playoffTeamList.clear();
+        this.playoffTeamList.addAll(teamList);
+        this.isTeamsSort = true;
+        onGameListCreate();
+        addEmptyGames();
+
+        repository = new RealmDB();
+        Tournament tournament = Tournament.getInstance(playoffTitle, null);
+        tournament.setPlayoff(this);
+        repository.delTournament(playoffTitle, true);
+        repository.createTournament(tournament);
 
         if (flag) {
             realm.commitTransaction();
@@ -283,7 +328,7 @@ public class Playoff extends RealmObject {
 
 
         repository = new RealmDB();
-        Tournament tournament = Tournament.getInstance(playoffTitle,context);
+        Tournament tournament = Tournament.getInstance(playoffTitle, context);
         tournament.setPlayoff(this);
         repository.delTournament(playoffTitle, true);
         repository.createTournament(tournament);
@@ -362,6 +407,14 @@ public class Playoff extends RealmObject {
 
         //Position return value
         return nextPosition;
+    }
+
+    public boolean getIsTeamsSort() {
+        return isTeamsSort;
+    }
+
+    public void setTeamsSort(boolean teamsSort) {
+        isTeamsSort = teamsSort;
     }
 
     public void setPlayoffTitle(String playoffTitle) {

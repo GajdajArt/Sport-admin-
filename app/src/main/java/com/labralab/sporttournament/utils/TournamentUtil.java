@@ -6,6 +6,7 @@ import com.labralab.sporttournament.models.Team;
 import com.labralab.sporttournament.models.Tournament;
 import com.labralab.sporttournament.models.simple_models.SimplePlayoff;
 import com.labralab.sporttournament.models.simple_models.SimpleTournament;
+import com.labralab.sporttournament.models.sort_item.TeamSortItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +131,7 @@ public class TournamentUtil {
         newPlayoff.setPlayoffTitle(oldPlayoff.getPlayoffTitle());
         newPlayoff.setCountGames(oldPlayoff.getCountGames());
         newPlayoff.setTeamInPlayoff(oldPlayoff.getTeamInPlayoff());
+        newPlayoff.setTeamsSort(oldPlayoff.getIsTeamsSort());
 
         List<Game> playoffGameList = new ArrayList<>();
         playoffGameList.addAll(oldPlayoff.getPlayoffGameList());
@@ -157,6 +159,7 @@ public class TournamentUtil {
         newPlayoff.setPlayoffTitle(oldPlayoff.getPlayoffTitle());
         newPlayoff.setCountGames(oldPlayoff.getCountGames());
         newPlayoff.setTeamInPlayoff(oldPlayoff.getTeamInPlayoff());
+        newPlayoff.setTeamsSort(oldPlayoff.getIsTeamsSort());
 
         List<Game> playoffGameList = new ArrayList<>();
         playoffGameList.addAll(oldPlayoff.getPlayoffGameList());
@@ -175,6 +178,20 @@ public class TournamentUtil {
         newPlayoff.setPlayoffSecondTurGames(playoffSecondTurGames);
         newPlayoff.setPlayoffLastTurGames(playoffLastTurGames);
 
+
         return newPlayoff;
     }
+    public static TeamSortItem hardTeamToSort(Team oldTeam){
+
+        TeamSortItem newTeam = new TeamSortItem();
+        newTeam.setTitle(oldTeam.getTitle());
+        newTeam.setId(TeamSortItem.TEAM_ID);
+
+        return newTeam;
+    }
+
+    public static Team simpleTeamToHard(TeamSortItem oldTeam, List<Team> teams){
+        return teams.get(getTeam(teams, oldTeam.getTitle()));
+    }
+
 }
