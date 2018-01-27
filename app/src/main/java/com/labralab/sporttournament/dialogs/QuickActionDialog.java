@@ -34,6 +34,7 @@ public class QuickActionDialog {
     private static final int ID_TOURNAMENT = 1;
     private static final int ID_TEAM = 2;
     private static final int ID_GAME = 3;
+    private static final int ID_GAME_IN_PLAYOFF = 4;
 
     final View view;
     final String title;
@@ -124,6 +125,13 @@ public class QuickActionDialog {
                                 AppCompatActivity activity_3 = (AppCompatActivity) view.getContext();
                                 FragmentManager fragmentManager_3 = activity_3.getSupportFragmentManager();
                                 editGameDialog.show(fragmentManager_3, "Tag");
+                                break;
+
+                            case ID_GAME_IN_PLAYOFF:
+                                AppCompatActivity activity_4 = (AppCompatActivity) view.getContext();
+                                FragmentManager fragmentManager_4 = activity_4.getSupportFragmentManager();
+                                editGameDialog.show(fragmentManager_4, "Tag");
+                                break;
                         }
                         break;
 
@@ -209,6 +217,39 @@ public class QuickActionDialog {
                                 });
                                 AlertDialog alertDelGameDialog = gameDelBuilder.create();
                                 gameDelBuilder.show();
+                                break;
+
+                            case ID_GAME_IN_PLAYOFF:
+
+                                final String pOTeamOne = bundle.getString("teamOne");
+                                final String pOTeamTwo = bundle.getString("teamTwo");
+
+                                AlertDialog.Builder playoffDelBuilder = new AlertDialog.Builder(view.getContext());
+                                playoffDelBuilder.setMessage(R.string.delete_that_game);
+                                playoffDelBuilder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        Tournament.getInstance().getPlayoff().removeGame(pOTeamOne, pOTeamTwo, view.getContext());
+                                        TeamActivity teamActivity = (TeamActivity) view.getContext();
+
+                                        teamActivity.getPlayoffFragment().onStart();
+                                        teamActivity.getPlayoffFragment().onStart();
+                                        dialog.cancel();
+
+                                    }
+                                });
+                                playoffDelBuilder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        dialog.cancel();
+
+                                    }
+                                });
+                                AlertDialog pOAlertDelGameDialog = playoffDelBuilder.create();
+                                playoffDelBuilder.show();
+                                break;
 
                         }
                 }

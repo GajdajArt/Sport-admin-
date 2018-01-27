@@ -60,12 +60,14 @@ public class Tournament extends RealmObject implements Serializable {
         }
         //Добавляем турнир в базу данных при создании
 
-
+//
 //        //TESTTESTTEST
 //        for (int i = 0; i < 9; i++) {
 //            Team team = new Team("team" + i);
 //            teamList.add(team);
 //        }
+//
+
         teamsCount = teamList.size();
         maxCountGame = ((teamsCount * (teamsCount - 1)) / 2) * loops;
 
@@ -453,7 +455,7 @@ public class Tournament extends RealmObject implements Serializable {
 //                //Ставим флаг что плей-офф начался
                 isPlayoffFlag = true;
 //                recreateTournament(context);
-                playoff = new Playoff(teamList, teamInPlayoff, title);
+                this.playoff = new Playoff(teamList, teamInPlayoff, title);
                 repository.delTournament(title, isPlayoffFlag);
                 repository.createTournament(this);
             }

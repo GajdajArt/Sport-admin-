@@ -119,7 +119,18 @@ public class EditTeamAdapter extends RecyclerView.Adapter<EditTeamViewHolder> {
             if (i == 3 || i == 5 || i == 7) {
 
                 TeamSortItem separator = new TeamSortItem();
-                separator.setTitle("Игра №2");
+                switch (i){
+                    case 3:
+                        separator.setTitle("Игра №2");
+                        break;
+                    case 5:
+                        separator.setTitle("Игра №3");
+                        break;
+                    case 7:
+                        separator.setTitle("Игра №4");
+                        break;
+                }
+
                 separator.setId(TeamSortItem.SEPARATOR_ID);
                 simpleTeams.add(separator);
             }

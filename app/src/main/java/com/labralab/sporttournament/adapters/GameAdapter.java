@@ -59,7 +59,7 @@ public class GameAdapter extends RecyclerView.Adapter<GameViewHolder> {
 class GameViewHolder extends RecyclerView.ViewHolder implements
         View.OnLongClickListener, View.OnClickListener {
 
-    public static final int TOURN_ADAPTER_ID = 3;
+    public static final int GAME_ADAPTER_ID = 3;
     TextView teamOneTV;
     TextView teamTwoTV;
     TextView scoreTwoTV;
@@ -112,7 +112,7 @@ class GameViewHolder extends RecyclerView.ViewHolder implements
         editGameDialog.setArguments(bundle);
 
         QuickActionDialog quickActionDialog = new QuickActionDialog(itemView,
-                TOURN_ADAPTER_ID,
+                GAME_ADAPTER_ID,
                 editGameDialog, bundle);
         quickActionDialog.onActionStart();
         return true;

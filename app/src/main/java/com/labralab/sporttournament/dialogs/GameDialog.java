@@ -62,8 +62,8 @@ public class GameDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         teamActivity = (TeamActivity) getActivity();
-        teamList = Tournament.getInstance().getTeamList();
-        gameList = Tournament.getInstance().getGameList();
+        teamList = teamActivity.getTournament().getTeamList();
+        gameList = teamActivity.getTournament().getGameList();
 
         builder = new AlertDialog.Builder(getActivity());
         setTitle();
@@ -73,19 +73,20 @@ public class GameDialog extends DialogFragment {
 
         //find the layout.dialog_task and all the elements within it.
         container = inflater.inflate(R.layout.game_dialog_maket, null);
-
         initUI();
 
         if (this.getArguments() != null) {
             if (this.getArguments().getInt("playoffID") == PLAYOFF_ID) {
 
-                playoff = Tournament.getInstance().getPlayoff();
+                playoff = teamActivity.getTournament().getPlayoff();
                 teamList = playoff.getPlayoffTeamList();
                 gameList = playoff.getPlayoffGameList();
+                initUI();
                 spTeamOne.setEnabled(false);
                 spTeamTwo.setEnabled(false);
             }
         }
+
 
         setParams();
 
@@ -96,9 +97,36 @@ public class GameDialog extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                DateDialog dateDialog = new DateDialog();
-                dateDialog.getDate(dialog,GameDialog.this, teamActivity.getSupportFragmentManager(), "TAG");
+                String teamOne = spTeamOne.getSelectedItem().toString();
+                String teamTwo = spTeamTwo.getSelectedItem().toString();
+                int scoreOne = Integer.parseInt(edScoreOne.getText().toString());
+                int scoreTwo = Integer.parseInt(edScoreTwo.getText().toString());
 
+                if (GameDialog.this.getArguments() != null) {
+
+                    if (GameDialog.this.getArguments().getInt("playoffID") == PLAYOFF_ID) {
+                        if (scoreOne != scoreTwo) {
+                            startDateDialog(dialog);
+                        } else {
+                            Toast.makeText(getActivity(), R.string.the_equal_account, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+
+                        if (Tournament.getInstance().checkGame(teamOne, teamTwo)) {
+                            startDateDialog(dialog);
+                        } else {
+                            Toast.makeText(getActivity(), R.string.that_game_already_exist, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                } else {
+
+                    if (Tournament.getInstance().checkGame(teamOne, teamTwo)) {
+                        startDateDialog(dialog);
+                    } else {
+                        Toast.makeText(getActivity(), R.string.that_game_already_exist, Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
         });
@@ -126,6 +154,7 @@ public class GameDialog extends DialogFragment {
 
             }
         });
+
 
         spTeamOne.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -202,7 +231,12 @@ public class GameDialog extends DialogFragment {
         return alertDialog;
     }
 
-    public void onOkClick(DialogInterface dialog, int[] date){
+    private void startDateDialog(DialogInterface dialog) {
+        DateDialog dateDialog = new DateDialog();
+        dateDialog.getDate(dialog, GameDialog.this, teamActivity.getSupportFragmentManager(), "TAG");
+    }
+
+    public void onOkClick(DialogInterface dialog, int[] date) {
 
 //        final Calendar c = Calendar.getInstance();
 //        int year = c.get(Calendar.YEAR);
@@ -220,8 +254,8 @@ public class GameDialog extends DialogFragment {
 
 
         if (GameDialog.this.getArguments() == null) {
-
-            if (Tournament.getInstance().checkGame(teamOne, teamTwo)) {
+            //TEST
+            for (int i = 0; i < 38; i++) {
 
                 Tournament.getInstance().addGame(teamOne
                         , teamTwo
@@ -229,9 +263,6 @@ public class GameDialog extends DialogFragment {
                         , scoreTwo
                         , getActivity()
                         , day, month, year);
-
-            } else {
-                Toast.makeText(getActivity(), R.string.that_game_already_exist, Toast.LENGTH_SHORT).show();
             }
 
         } else {

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.labralab.sporttournament.R;
 import com.labralab.sporttournament.dialogs.GameDialog;
+import com.labralab.sporttournament.dialogs.QuickActionDialog;
 import com.labralab.sporttournament.models.Game;
 
 import java.util.ArrayList;
@@ -111,6 +112,7 @@ public class GameInPlayoffAdapter extends RecyclerView.Adapter<GameInPlayoffView
 class GameInPlayoffViewHolder extends RecyclerView.ViewHolder implements
         View.OnLongClickListener, View.OnClickListener {
 
+    public static final int GAME_ADAPTER_ID = 4;
     TextView teamOneTV;
     TextView teamTwoTV;
     TextView scoreTwoTV;
@@ -149,6 +151,19 @@ class GameInPlayoffViewHolder extends RecyclerView.ViewHolder implements
 
     @Override
     public boolean onLongClick(View view) {
+
+        DialogFragment editGameDialog = new GameDialog();
+        Bundle bundle = new Bundle();
+        bundle.putString("teamOne", teamOneTV.getText().toString());
+        bundle.putString("teamTwo", teamTwoTV.getText().toString());
+        bundle.putString("scoreTwo", scoreTwoTV.getText().toString());
+        bundle.putString("scoreOne", scoreOneTV.getText().toString());
+        editGameDialog.setArguments(bundle);
+
+        QuickActionDialog quickActionDialog = new QuickActionDialog(itemView,
+                GAME_ADAPTER_ID,
+                editGameDialog, bundle);
+        quickActionDialog.onActionStart();
         return true;
     }
 

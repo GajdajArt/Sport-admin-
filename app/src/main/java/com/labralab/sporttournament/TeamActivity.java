@@ -88,6 +88,14 @@ public class TeamActivity extends AppCompatActivity {
         return teamTabFragment;
     }
 
+    public String getTournTitle(){
+        return tournTitle;
+    }
+
+    public Tournament getTournament(){
+        return tournament;
+    }
+
     public void showContent() {
 
         //List of Fragments for Segment Tab Layout

@@ -86,7 +86,7 @@ public class EditTeamPositionFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Tournament tournament = Tournament.getInstance();
+                Tournament tournament = teamActivity.getTournament();
                 tournament.getPlayoff().setTeamListAfterSort(teamAdapter.getTeams());
 
                 Intent intent = new Intent(getContext(), TeamActivity.class);
