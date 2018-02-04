@@ -6,4 +6,5 @@
     <color name="colorAccent">@android:color/holo_orange_dark</color>
     <color name="backgroundTransparent">#00ffffff</color>
     <color name="white">@android:color/white</color>
+    <color name="backgroundColor">#f9f9f9</color>
 </resources>

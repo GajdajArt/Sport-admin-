@@ -4,17 +4,18 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+
+import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.labralab.sporttournament.fragments.EditTeamPositionFragment;
 import com.labralab.sporttournament.fragments.PlayoffFragment;
 import com.labralab.sporttournament.fragments.TeamTabFragment;
 import com.labralab.sporttournament.models.Tournament;
@@ -30,6 +31,8 @@ public class TeamActivity extends AppCompatActivity {
     private String tournTitle;
     private Toolbar toolbar;
     private SegmentTabLayout segmentTabLayout;
+    public Display display;
+    public int displayHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +118,16 @@ public class TeamActivity extends AppCompatActivity {
         segmentTabLayout = (SegmentTabLayout) findViewById(R.id.SlTL);
         segmentTabLayout.setTabData(mTitles, this, R.id.team_container, mFragments);
 
+        display = getWindowManager().getDefaultDisplay();
+        displayHeight = display.getHeight();
+        int marginBottom = displayHeight / 7;
+        final int animHeight = displayHeight /12;
+
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) segmentTabLayout.getLayoutParams();
+        params.bottomMargin = marginBottom;
+        segmentTabLayout.setLayoutParams(params);
+
+
         //set TabSelectListener to SegmentTab Layout
         segmentTabLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -125,7 +138,7 @@ public class TeamActivity extends AppCompatActivity {
                     case 0:
 
                         //Making animation
-                        ObjectAnimator upObjectAnimator = ObjectAnimator.ofFloat(TeamActivity.this.segmentTabLayout, View.TRANSLATION_Y, 130, 0);
+                        ObjectAnimator upObjectAnimator = ObjectAnimator.ofFloat(TeamActivity.this.segmentTabLayout, View.TRANSLATION_Y, animHeight, 0);
                         upObjectAnimator.setInterpolator(new OvershootInterpolator());
                         upObjectAnimator.setDuration(700);
                         upObjectAnimator.start();
@@ -136,7 +149,7 @@ public class TeamActivity extends AppCompatActivity {
                     case 1:
 
                         //Making animation
-                        ObjectAnimator downObjectAnimator = ObjectAnimator.ofFloat(TeamActivity.this.segmentTabLayout, View.TRANSLATION_Y, 0, 130);
+                        ObjectAnimator downObjectAnimator = ObjectAnimator.ofFloat(TeamActivity.this.segmentTabLayout, View.TRANSLATION_Y, 0, animHeight);
                         downObjectAnimator.setInterpolator(new OvershootInterpolator());
                         downObjectAnimator.setDuration(700);
                         downObjectAnimator.start();

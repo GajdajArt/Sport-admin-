@@ -1,15 +1,22 @@
 package com.labralab.sporttournament.fragments;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
+import com.labralab.sporttournament.TeamActivity;
 import com.labralab.sporttournament.adapters.GameInPlayoffAdapter;
 import com.labralab.sporttournament.R;
 import com.labralab.sporttournament.models.Game;
@@ -24,6 +31,8 @@ import java.util.List;
  */
 
 public class PlayoffFragment extends Fragment {
+
+    TeamActivity teamActivity;
 
     RecyclerView firstRecyclerView;
     RecyclerView secondRecyclerView;
@@ -49,6 +58,8 @@ public class PlayoffFragment extends Fragment {
 
     Playoff playoff;
 
+    boolean rvTouch;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,12 +75,19 @@ public class PlayoffFragment extends Fragment {
 
         if (Tournament.getInstance().getIsPlayoffFlag()) {
 
-            display = getActivity().getWindowManager().getDefaultDisplay();
+            teamActivity = (TeamActivity) getActivity();
+            display = teamActivity.display;
+            int displayHeight = display.getHeight();
 
             playoff = Tournament.getInstance().getPlayoff();
             teamInPlayoff = playoff.getTeamInPlayoff();
 
             ImageView logo = (ImageView) getActivity().findViewById(R.id.playoff_logo);
+
+            ViewGroup.LayoutParams params = logo.getLayoutParams();
+            params.height = displayHeight / 8;
+            params.width = displayHeight / 8;
+            logo.setLayoutParams(params);
 
             if (Tournament.getInstance().getType().equals("Футбол")) {
                 logo.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.f1f));
@@ -108,6 +126,22 @@ public class PlayoffFragment extends Fragment {
         firstAdapter = new GameInPlayoffAdapter(firstTur, 1, teamInPlayoff, display);
         firstRecyclerView.setLayoutManager(firstManager);
         firstRecyclerView.setAdapter(firstAdapter);
+
+        firstRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                isTouch(motionEvent);
+                return false;
+            }
+        });
+
+        firstRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                moveTabLayout(firstRecyclerView, dy);
+            }
+        });
     }
 
     private void secondRVStart() {
@@ -119,6 +153,22 @@ public class PlayoffFragment extends Fragment {
         secondAdapter = new GameInPlayoffAdapter(secondTur, 2, teamInPlayoff, display);
         secondRecyclerView.setLayoutManager(secondManager);
         secondRecyclerView.setAdapter(secondAdapter);
+
+        secondRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                isTouch(motionEvent);
+                return false;
+            }
+        });
+
+        secondRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                moveTabLayout(secondRecyclerView, dy);
+            }
+        });
     }
 
     private void lastRVStart() {
@@ -130,5 +180,62 @@ public class PlayoffFragment extends Fragment {
         lastAdapter = new GameInPlayoffAdapter(lastTur, 3, teamInPlayoff, display);
         lastRecyclerView.setLayoutManager(lastManager);
         lastRecyclerView.setAdapter(lastAdapter);
+
+        lastRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                isTouch(motionEvent);
+                return false;
+            }
+        });
+
+        lastRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                moveTabLayout(lastRecyclerView, dy);
+            }
+        });
+    }
+
+    private void isTouch(MotionEvent motionEvent) {
+
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            rvTouch = true;
+        }
+        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            rvTouch = false;
+        }
+    }
+
+    private void moveTabLayout(RecyclerView recyclerView, int dy) {
+
+        if (dy > 0) {
+
+            // Scroll Down
+            if (teamActivity.getSegmentTabLayout().isShown()) {
+
+                final Animation fallingAnimation = AnimationUtils.loadAnimation(recyclerView.getContext(),
+                        R.anim.out_doun);
+                fallingAnimation.setInterpolator(new LinearInterpolator());
+                teamActivity.getSegmentTabLayout().startAnimation(fallingAnimation);
+                teamActivity.getSegmentTabLayout().setVisibility(View.INVISIBLE);
+
+                rvTouch = false;
+            }
+        } else if (dy < 0) {
+
+            // Scroll Up
+            if (!teamActivity.getSegmentTabLayout().isShown()) {
+
+                final Animation fallingAnimation = AnimationUtils.loadAnimation(recyclerView.getContext(),
+                        R.anim.in_up);
+                fallingAnimation.setInterpolator(new LinearOutSlowInInterpolator());
+                teamActivity.getSegmentTabLayout().startAnimation(fallingAnimation);
+                teamActivity.getSegmentTabLayout().setVisibility(View.VISIBLE);
+
+                rvTouch = false;
+            }
+        }
     }
 }

@@ -12,6 +12,6 @@
         <item name="android:textColorSecondary">@color/colorPrimary</item>
         <item name="android:textColorSecondaryInverse">?android:attr/textColorSecondaryNoDisable
         </item>
-
+        <item name="android:colorBackground">@color/backgroundColor</item>
     </style>
 </resources>

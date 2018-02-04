@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,6 +60,7 @@ public class GameInPlayoffAdapter extends RecyclerView.Adapter<GameInPlayoffView
 
     @Override
     public void onBindViewHolder(GameInPlayoffViewHolder holder, int position) {
+
         Game item = items.get(position);
         holder.teamOneTV.setText(item.getTeam_1().getTitle());
         holder.teamTwoTV.setText(item.getTeam_2().getTitle());
@@ -65,6 +68,12 @@ public class GameInPlayoffAdapter extends RecyclerView.Adapter<GameInPlayoffView
         holder.scoreTwoTV.setText(Integer.toString(item.getScore_2()));
 
         int width = display.getWidth();
+//        int height = display.getHeight();
+//        int textSize = height / 80;
+//        int cardViewSize = textSize * 4;
+//
+
+
 
 
         if (teamInPlayoff == 2) {
@@ -79,25 +88,63 @@ public class GameInPlayoffAdapter extends RecyclerView.Adapter<GameInPlayoffView
         }
 
         if (teamInPlayoff == 4) {
+//
+//            holder.twoP1.setTextSize(textSize);
+//            holder.twoP2.setTextSize(textSize);
+//            holder.teamOneTV.setTextSize(textSize);
+//            holder.teamTwoTV.setTextSize(textSize);
+//            holder.scoreOneTV.setTextSize(textSize);
+//            holder.scoreTwoTV.setTextSize(textSize);
+
+//            ViewGroup.LayoutParams params = holder.cardView.getLayoutParams();
+//            params.height = cardViewSize;
+//            holder.cardView.setLayoutParams(params);
+
+            int cardHeight = (int) holder.itemView.getContext().getResources().getDimensionPixelSize(R.dimen.card_hides);
+            int cardMarginTop = (int) holder.itemView.getContext().getResources().getDimensionPixelSize(R.dimen.margin_top_in_playoff);
+            int firstTurHeight = (cardHeight + cardMarginTop) * 2;
+            int secondTurPadding = ((firstTurHeight + cardMarginTop) - cardHeight) / 2 ;
+
+
             holder.linearLayout.setLayoutParams(new LinearLayout.LayoutParams((width / 2) - 10, ViewGroup.LayoutParams.WRAP_CONTENT));
+
             switch (tur) {
                 case 1:
+                    holder.linearLayout.setPadding(5, cardMarginTop, 5, 0);
                     break;
                 case 3:
-                    holder.linearLayout.setPadding(5, 110, 5, 80);
+                    holder.linearLayout.setPadding(5, secondTurPadding, 5, secondTurPadding);
                     break;
             }
         }
 
         if (teamInPlayoff == 8) {
+//
+//            holder.twoP1.setTextSize(textSize);
+//            holder.twoP2.setTextSize(textSize);
+//            holder.teamOneTV.setTextSize(textSize);
+//            holder.teamTwoTV.setTextSize(textSize);
+//            holder.scoreOneTV.setTextSize(textSize);
+//            holder.scoreTwoTV.setTextSize(textSize);
+
+//            ViewGroup.LayoutParams params = holder.cardView.getLayoutParams();
+//            params.height = cardViewSize;
+//            holder.cardView.setLayoutParams(params);
+
+            int cardHeight = (int) holder.itemView.getContext().getResources().getDimensionPixelSize(R.dimen.card_hides);
+            int cardMarginTop = (int) holder.itemView.getContext().getResources().getDimensionPixelSize(R.dimen.margin_top_in_playoff);
+            int firstTurHeight = (cardHeight + cardMarginTop) * 4;
+            int secondTurPadding = (firstTurHeight - (cardHeight + cardMarginTop) * 2) / 4;
+            int lastTutPadding = secondTurPadding * 3;
+
             switch (tur) {
                 case 1:
                     break;
                 case 2:
-                    holder.linearLayout.setPadding(5, 110, 5, 80);
+                    holder.linearLayout.setPadding(5, secondTurPadding, 5, secondTurPadding);
                     break;
                 case 3:
-                    holder.linearLayout.setPadding(5, 255, 5, 70);
+                    holder.linearLayout.setPadding(5, lastTutPadding, 5, lastTutPadding);
                     break;
             }
         }
@@ -117,7 +164,10 @@ class GameInPlayoffViewHolder extends RecyclerView.ViewHolder implements
     TextView teamTwoTV;
     TextView scoreTwoTV;
     TextView scoreOneTV;
+    TextView twoP1;
+    TextView twoP2;
     LinearLayout linearLayout;
+    GridLayout cardView;
 
     TextView dateTV;
 
@@ -130,10 +180,14 @@ class GameInPlayoffViewHolder extends RecyclerView.ViewHolder implements
         itemView.setOnLongClickListener(this);
 
         if (teamInPlayoff == 8 || teamInPlayoff == 4) {
+
+            cardView = (GridLayout) itemView.findViewById(R.id.playoff_card);
             teamOneTV = (TextView) itemView.findViewById(R.id.team_one_in_playoff);
             teamTwoTV = (TextView) itemView.findViewById(R.id.team_two_in_playoff);
             scoreOneTV = (TextView) itemView.findViewById(R.id.score_one_in_playoff);
             scoreTwoTV = (TextView) itemView.findViewById(R.id.score_two_in_playoff);
+            twoP1 = (TextView) itemView.findViewById(R.id.twoP1);
+            twoP2 = (TextView) itemView.findViewById(R.id.twoP2);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.playoff_container);
 
         }

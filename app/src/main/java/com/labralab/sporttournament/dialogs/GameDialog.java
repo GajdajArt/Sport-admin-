@@ -254,8 +254,18 @@ public class GameDialog extends DialogFragment {
 
 
         if (GameDialog.this.getArguments() == null) {
+
+            int test = 1;
+            switch (teamActivity.getTournTitle()){
+                case "8":
+                    test = 38;
+                    break;
+                case "4":
+                    test = 10;
+                    break;
+            }
             //TEST
-            for (int i = 0; i < 38; i++) {
+            for (int i = 0; i < test; i++) {
 
                 Tournament.getInstance().addGame(teamOne
                         , teamTwo

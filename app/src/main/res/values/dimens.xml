@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="card_hides">60dp</dimen>
+    <dimen name="text_in_playoff_size">15dp</dimen>
+    <dimen name="margin_top_in_playoff">20dp</dimen>
+</resources>
