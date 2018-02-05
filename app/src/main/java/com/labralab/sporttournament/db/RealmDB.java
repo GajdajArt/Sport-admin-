@@ -1,22 +1,11 @@
 package com.labralab.sporttournament.db;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.labralab.sporttournament.fragments.StartFragment;
-import com.labralab.sporttournament.models.Check;
-import com.labralab.sporttournament.models.Game;
-import com.labralab.sporttournament.models.Playoff;
-import com.labralab.sporttournament.models.Team;
 import com.labralab.sporttournament.models.Tournament;
 import com.labralab.sporttournament.models.simple_models.BasePOJO;
 import com.labralab.sporttournament.models.simple_models.SimpleTournament;
@@ -25,7 +14,6 @@ import com.labralab.sporttournament.utils.TournamentUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -107,6 +95,7 @@ public class RealmDB implements TournamentRepository {
                     }
                 }
                 startFragment.setData(fBData);
+                startFragment.hideRefreshing();
             }
 
             @Override

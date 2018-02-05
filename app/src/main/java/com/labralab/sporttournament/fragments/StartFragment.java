@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +37,7 @@ public class StartFragment extends Fragment {
     private TextView hint;
     private TournamentFragment tournamentFragment;
     private MainActivity mainActivity;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     Handler handler;
 
@@ -61,6 +63,15 @@ public class StartFragment extends Fragment {
         mainActivity.getSupportActionBar().show();
         tournamentFragment = mainActivity.getTournamentFragment();
 
+        swipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeLayout);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent, R.color.colorPrimary);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                tournament.getTournList(StartFragment.this);
+            }
+        });
+
 
         adapter = new TournAdapter(items);
         //Creating new tournament to get a list items(Tournaments list)
@@ -81,8 +92,9 @@ public class StartFragment extends Fragment {
         //Connection adapter
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-
         recyclerView.setAdapter(adapter);
+
+
 
         //Connection FloatingActionButton
         FloatingActionButton FAB = (FloatingActionButton) getActivity().findViewById(R.id.fab);
@@ -143,12 +155,15 @@ public class StartFragment extends Fragment {
         hint.setText(null);
         hint.setBackgroundColor(getResources().getColor(R.color.backgroundTransparent));
         progressBar.setVisibility(View.VISIBLE);
-
     }
 
     public void hideProgressBar() {
         progressBar.setVisibility(View.INVISIBLE);
         firstHint();
+    }
+
+    public void hideRefreshing(){
+        swipeRefreshLayout.setRefreshing(false);
     }
 }
 
